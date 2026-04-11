@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan:*)",
+      "Bash(curl:*)",
+      "Bash(grep -o 'name=\"_\\\\{0,1}token\" value=\"[^\"]*\"')"
+    ]
+  }
+}
