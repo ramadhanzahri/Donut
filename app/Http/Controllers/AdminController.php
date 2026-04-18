@@ -19,7 +19,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'name'     => 'required|string|max:100',
-            'username' => 'required|string|max:50|unique:users,username',
+            'username' => 'required|string|max:50|unique:tbl_admin,username',
             'password' => 'required|string|min:6',
             'role'     => 'required|in:admin,superadmin',
         ], [
@@ -46,7 +46,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'name'     => 'required|string|max:100',
-            'username' => 'required|string|max:50|unique:users,username,' . $user->id,
+            'username' => 'required|string|max:50|unique:tbl_admin,username,' . $user->id,
             'role'     => 'required|in:admin,superadmin',
             'password' => 'nullable|string|min:6',
         ], [

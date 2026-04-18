@@ -9,7 +9,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table      = 'users';
+    protected $table      = 'tbl_admin';
     protected $primaryKey = 'id';
 
     protected $fillable = [
