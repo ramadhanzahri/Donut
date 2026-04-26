@@ -1,427 +1,197 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
-
-@section('content')
-
-{{-- ═══════════════════════════════════
-     PAGE HEADER
-═══════════════════════════════════ --}}
-<div class="page-header">
-  <h2>📊 Dashboard</h2>
-  <p>
-    Selamat datang, <strong>{{ Auth::user()->name }}</strong>
-    &nbsp;·&nbsp;
-    <span style="color:var(--text-light);">{{ now()->isoFormat('dddd, D MMMM Y') }}</span>
-  </p>
-</div>
-
-{{-- ═══════════════════════════════════
-     STAT CARDS
-═══════════════════════════════════ --}}
-<div class="stats-grid">
-
-  <div class="stat-card">
-    <div class="stat-icon" style="background:#fce4ec;">🍩</div>
-    <div class="stat-body">
-      <p>Total Produk</p>
-      <h3>{{ $stats['total_produk'] }}</h3>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon" style="background:#e8f5e9;">✅</div>
-    <div class="stat-body">
-      <p>Produk Aktif</p>
-      <h3>{{ $stats['aktif_produk'] }}</h3>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon" style="background:#fff8e1;">🏷️</div>
-    <div class="stat-body">
-      <p>Total Kategori</p>
-      <h3>{{ $stats['total_kategori'] }}</h3>
-    </div>
-  </div>
-
-  @if(Auth::user()->isSuperAdmin())
-  <div class="stat-card">
-    <div class="stat-icon" style="background:#e3f2fd;">👥</div>
-    <div class="stat-body">
-      <p>Total Admin</p>
-      <h3>{{ $stats['total_user'] }}</h3>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon" style="background:#ede7f6;">🛡️</div>
-    <div class="stat-body">
-      <p>Super Admin</p>
-      <h3>{{ $stats['superadmin'] }}</h3>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon" style="background:#fff0f5;">👤</div>
-    <div class="stat-body">
-      <p>Admin Biasa</p>
-      <h3>{{ $stats['admin'] }}</h3>
-    </div>
-  </div>
-  @endif
-
-</div>
-
-{{-- ═══════════════════════════════════
-     2-COLUMN GRID: QUICK LINKS + PASSWORD
-═══════════════════════════════════ --}}
-<div class="dash-grid">
-
-  {{-- ── Akses Cepat ── --}}
-  <div class="card">
-    <div class="card-top">
-      <span class="card-title">🚀 Akses Cepat</span>
-    </div>
-    <div class="quick-links">
-
-      <a href="{{ route('kategori.index') }}" class="quick-item">
-        <div class="quick-icon" style="background:#fff8e1;">🏷️</div>
-        <div class="quick-text">
-          <strong>Kelola Kategori</strong>
-          <span>Tambah / edit kategori produk</span>
-        </div>
-        <span class="quick-arrow">→</span>
-      </a>
-
-      <a href="{{ route('produk.index') }}" class="quick-item">
-        <div class="quick-icon" style="background:#fce4ec;">🍩</div>
-        <div class="quick-text">
-          <strong>Kelola Produk</strong>
-          <span>Tambah / edit data produk</span>
-        </div>
-        <span class="quick-arrow">→</span>
-      </a>
-
-      @if(Auth::user()->isSuperAdmin())
-      <a href="{{ route('admins.index') }}" class="quick-item">
-        <div class="quick-icon" style="background:#ede7f6;">👥</div>
-        <div class="quick-text">
-          <strong>Kelola Admin</strong>
-          <span>Manajemen akun administrator</span>
-        </div>
-        <span class="quick-arrow">→</span>
-      </a>
-      @endif
-
-      <a href="{{ route('beranda') }}" target="_blank" rel="noopener" class="quick-item">
-        <div class="quick-icon" style="background:#e3f2fd;">🌐</div>
-        <div class="quick-text">
-          <strong>Lihat Website</strong>
-          <span>Buka halaman publik di tab baru</span>
-        </div>
-        <span class="quick-arrow" style="opacity:.5;">↗</span>
-      </a>
-
-    </div>
-  </div>
-
-  {{-- ── Ganti Password ── --}}
-  <div class="card">
-    <div class="card-top">
-      <span class="card-title">🔒 Ganti Password</span>
-      <button class="btn-secondary" id="pwToggleBtn" onclick="togglePwForm()">
-        ✏️ Ubah
-      </button>
-    </div>
-
-    {{-- Collapsed info (default) --}}
-    <div id="pwInfo" style="padding:28px 24px;display:flex;align-items:center;gap:16px;">
-      <div style="width:52px;height:52px;background:var(--pink-pale);border-radius:14px;
-                  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">
-        🔑
-      </div>
-      <div>
-        <p style="font-size:14px;font-weight:600;margin-bottom:4px;">Password Akun</p>
-        <p style="font-size:13px;color:var(--text-light);">
-          Klik tombol <strong>Ubah</strong> untuk mengganti password login Anda.
-        </p>
-      </div>
-    </div>
-
-    {{-- Form (hidden, muncul saat toggle) --}}
-    <div class="add-form-wrap" id="pwForm">
-
-      @if(session('success_pw'))
-      <div class="alert alert-success">✅ {{ session('success_pw') }}</div>
-      @endif
-      @if(session('error_pw'))
-      <div class="alert alert-error">❌ {{ session('error_pw') }}</div>
-      @endif
-
-      <form method="POST" action="{{ route('profile.password') }}">
-        @csrf
-        @method('PUT')
-
-        <div class="form-field">
-          <label>Password Saat Ini</label>
-          <div style="position:relative;">
-            <span class="pw-icon">🔒</span>
-            <input type="password"
-              name="old_password"
-              class="pw-input {{ $errors->has('old_password') ? 'is-invalid' : '' }}"
-              placeholder="Masukkan password lama"
-              required>
-          </div>
-          @error('old_password')
-          <div class="field-error">⚠ {{ $message }}</div>
-          @enderror
-        </div>
-
-        <div class="form-field">
-          <label>Password Baru</label>
-          <div style="position:relative;">
-            <span class="pw-icon">🔑</span>
-            <input type="password"
-              name="new_password"
-              class="pw-input {{ $errors->has('new_password') ? 'is-invalid' : '' }}"
-              placeholder="Minimal 6 karakter"
-              required>
-          </div>
-          @error('new_password')
-          <div class="field-error">⚠ {{ $message }}</div>
-          @enderror
-        </div>
-
-        <div class="form-field">
-          <label>Konfirmasi Password Baru</label>
-          <div style="position:relative;">
-            <span class="pw-icon">✅</span>
-            <input type="password"
-              name="new_password_confirmation"
-              class="pw-input"
-              placeholder="Ulangi password baru"
-              required>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;margin-top:4px;">
-          <button type="submit" class="btn-primary">💾 Simpan Password</button>
-          <button type="button" class="btn-secondary" onclick="togglePwForm()">Batal</button>
-        </div>
-
-      </form>
-    </div>
-  </div>
-
-</div>
-
-{{-- ═══════════════════════════════════
-     INFO AKUN (bawah)
-═══════════════════════════════════ --}}
-<div class="card" style="margin-top:22px;">
-  <div class="card-top">
-    <span class="card-title">👤 Informasi Akun</span>
-  </div>
-  <div style="padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
-
-    <div class="info-item">
-      <span class="info-label">Nama Lengkap</span>
-      <span class="info-value">{{ Auth::user()->name }}</span>
-    </div>
-
-    <div class="info-item">
-      <span class="info-label">Username</span>
-      <span class="info-value">
-        <span class="mono">{{ Auth::user()->username }}</span>
-      </span>
-    </div>
-
-    <div class="info-item">
-      <span class="info-label">Role</span>
-      <span class="info-value">
-        <span class="badge {{ Auth::user()->isSuperAdmin() ? 'badge-super' : 'badge-admin' }}">
-          {{ Auth::user()->role }}
-        </span>
-      </span>
-    </div>
-
-    <div class="info-item">
-      <span class="info-label">Bergabung Sejak</span>
-      <span class="info-value">
-        {{ optional(Auth::user()->created_at)->format('d M Y') ?? '-' }}
-      </span>
-    </div>
-
-  </div>
-</div>
-
-@endsection
+@section('page-title', 'Dashboard')
 
 @push('styles')
 <style>
-  /* ── 2-col grid ── */
-  .dash-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-  }
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:20px;margin-bottom:28px}
+.stat-card{
+    background:var(--surface-2);border:1px solid var(--border);
+    border-radius:var(--radius);padding:22px 20px;
+    box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:18px;
+    transition:transform var(--t),box-shadow var(--t);
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.stat-icon{
+    width:52px;height:52px;border-radius:var(--radius-sm);
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;flex-shrink:0;
+}
+.stat-icon.pink   {background:var(--pink-pale);color:var(--pink)}
+.stat-icon.green  {background:#edfdf5;color:#1a7a4a}
+.stat-icon.blue   {background:#eef4ff;color:#4285F4}
+.stat-icon.orange {background:#fff8ed;color:#e67e22}
+.stat-body{}
+.stat-label{font-size:12px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.stat-value{font-size:2rem;font-weight:800;color:var(--text);line-height:1}
+.stat-sub{font-size:12px;color:var(--text-light);margin-top:4px}
 
-  /* ── Quick Links ── */
-  .quick-links {
-    padding: 8px 0;
-  }
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.welcome-card{
+    background:linear-gradient(135deg,var(--pink) 0%,var(--pink-dark) 100%);
+    border-radius:var(--radius-lg);padding:28px 28px;
+    color:#fff;margin-bottom:28px;position:relative;overflow:hidden;
+}
+.welcome-card::after{
+    content:'🍩';position:absolute;right:24px;bottom:-8px;
+    font-size:80px;opacity:.2;line-height:1;
+}
+.welcome-card h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:6px}
+.welcome-card p{font-size:14px;opacity:.85;max-width:400px}
+.welcome-card .wc-meta{margin-top:16px;font-size:12px;opacity:.7}
 
-  .quick-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 22px;
-    text-decoration: none;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-    transition: background var(--t);
-  }
-
-  .quick-item:last-child {
-    border-bottom: none;
-  }
-
-  .quick-item:hover {
-    background: var(--pink-blush);
-  }
-
-  .quick-item:hover .quick-arrow {
-    opacity: 1;
-    color: var(--pink);
-    transform: translateX(3px);
-  }
-
-  .quick-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-
-  .quick-text {
-    flex: 1;
-  }
-
-  .quick-text strong {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-
-  .quick-text span {
-    font-size: 12px;
-    color: var(--text-light);
-  }
-
-  .quick-arrow {
-    font-size: 16px;
-    color: var(--text-light);
-    opacity: .4;
-    transition: opacity var(--t), color var(--t), transform var(--t);
-  }
-
-  /* ── Password field icon ── */
-  .pw-icon {
-    position: absolute;
-    left: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    pointer-events: none;
-  }
-
-  .pw-input {
-    width: 100%;
-    padding: 11px 14px 11px 40px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--white);
-    outline: none;
-    transition: border-color var(--t), box-shadow var(--t);
-  }
-
-  .pw-input:focus {
-    border-color: var(--pink);
-    box-shadow: 0 0 0 3px rgba(233, 30, 140, .08);
-  }
-
-  .pw-input.is-invalid {
-    border-color: var(--error-bdr);
-    background: #fff8f8;
-  }
-
-  /* ── Info Akun ── */
-  .info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .info-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: var(--text-muted);
-  }
-
-  .info-value {
-    font-size: 15px;
-    font-weight: 600;
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .dash-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+.quick-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.quick-link{
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(255,255,255,.15);color:#fff;
+    padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;
+    border:1px solid rgba(255,255,255,.2);
+    transition:background var(--t);
+}
+.quick-link:hover{background:rgba(255,255,255,.25)}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr}}
 </style>
 @endpush
 
-@push('scripts')
-<script>
-  (function() {
-    var form = document.getElementById('pwForm');
-    var info = document.getElementById('pwInfo');
-    var btn = document.getElementById('pwToggleBtn');
-    var isOpen = false;
+@section('content')
 
-    function openForm() {
-      isOpen = true;
-      form.classList.add('open');
-      info.style.display = 'none';
-      btn.textContent = '✕ Tutup';
-    }
+{{-- Welcome Banner --}}
+<div class="welcome-card">
+    <h2>Halo, {{ Auth::user()->name }}! 👋</h2>
+    <p>Selamat datang di panel admin Maw Maw Donut. Kelola produk dan kategori dari sini.</p>
+    <div class="wc-meta">
+        <i class="fa-solid fa-clock"></i>
+        Login sebagai <strong>{{ Auth::user()->role }}</strong>
+        &nbsp;·&nbsp;
+        {{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
+    </div>
+    <div class="quick-links">
+        <a href="{{ route('produk.index') }}" class="quick-link">
+            <i class="fa-solid fa-box-open"></i> Kelola Produk
+        </a>
+        <a href="{{ route('kategori.index') }}" class="quick-link">
+            <i class="fa-solid fa-tags"></i> Kelola Kategori
+        </a>
+        <a href="{{ route('beranda') }}" target="_blank" class="quick-link">
+            <i class="fa-solid fa-globe"></i> Lihat Website
+        </a>
+    </div>
+</div>
 
-    function closeForm() {
-      isOpen = false;
-      form.classList.remove('open');
-      info.style.display = 'flex';
-      btn.innerHTML = '✏️ Ubah';
-    }
+{{-- Stats Cards --}}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon pink"><i class="fa-solid fa-box-open"></i></div>
+        <div class="stat-body">
+            <div class="stat-label">Total Produk</div>
+            <div class="stat-value">{{ $totalProduk }}</div>
+            <div class="stat-sub">Semua produk terdaftar</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-body">
+            <div class="stat-label">Produk Aktif</div>
+            <div class="stat-value">{{ $totalProdukAktif }}</div>
+            <div class="stat-sub">Tampil di website</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-tags"></i></div>
+        <div class="stat-body">
+            <div class="stat-label">Kategori</div>
+            <div class="stat-value">{{ $totalKategori }}</div>
+            <div class="stat-sub">Kategori tersedia</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon orange"><i class="fa-solid fa-users-gear"></i></div>
+        <div class="stat-body">
+            <div class="stat-label">Total Admin</div>
+            <div class="stat-value">{{ $totalAdmin }}</div>
+            <div class="stat-sub">Pengguna terdaftar</div>
+        </div>
+    </div>
+</div>
 
-    window.togglePwForm = function() {
-      isOpen ? closeForm() : openForm();
-    };
+{{-- Recent Tables --}}
+<div class="grid-2">
+    {{-- Produk Terbaru --}}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Produk Terbaru</span>
+            <a href="{{ route('produk.index') }}" class="btn btn-sm btn-outline-pink">Lihat Semua</a>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nama Produk</th>
+                        <th>Harga</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($produkTerbaru as $p)
+                    <tr>
+                        <td style="color:var(--text);font-weight:600">{{ $p->nama_produk }}</td>
+                        <td>{{ $p->harga_rupiah }}</td>
+                        <td>
+                            <span class="badge {{ $p->status === 'aktif' ? 'badge-success' : 'badge-danger' }}">
+                                {{ $p->status }}
+                            </span>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3">
+                            <div class="empty-state" style="padding:20px">
+                                <p>Belum ada produk</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    {{-- Kategori --}}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Daftar Kategori</span>
+            <a href="{{ route('kategori.index') }}" class="btn btn-sm btn-outline-pink">Kelola</a>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nama Kategori</th>
+                        <th style="text-align:right">Jml Produk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($kategoris as $kat)
+                    <tr>
+                        <td style="color:var(--text);font-weight:600">{{ $kat->nama_kategori }}</td>
+                        <td style="text-align:right">
+                            <span class="badge badge-info">{{ $kat->produk_count }}</span>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="2">
+                            <div class="empty-state" style="padding:20px">
+                                <p>Belum ada kategori</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-    @if(session('success_pw') || session('error_pw') || $errors->has('old_password') || $errors->has('new_password'))
-    openForm();
-    @endif
-  })();
-</script>
-@endpush
+@endsection

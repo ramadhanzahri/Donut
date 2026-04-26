@@ -11,12 +11,14 @@ class User extends Authenticatable
 
     protected $table      = 'tbl_admin';
     protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
         'name',
         'username',
         'password',
         'role',
+        'status',
     ];
 
     protected $hidden = [

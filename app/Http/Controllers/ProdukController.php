@@ -12,7 +12,7 @@ class ProdukController extends Controller
     public function index()
     {
         $produks   = Produk::with('kategori')->latest()->get();
-        $kategoris = Kategori::where('status', 'aktif')->orderBy('nama_kategori')->get();
+        $kategoris = Kategori::orderBy('nama_kategori')->get();
         return view('dashboard.produk', compact('produks', 'kategoris'));
     }
 
@@ -53,8 +53,6 @@ class ProdukController extends Controller
             'gambar'      => $gambar,
         ]);
 
-        $this->syncJumlahProduk($request->id_kategori);
-
         return redirect()->route('produk.index')
             ->with('success', "Produk \"{$produk->nama_produk}\" berhasil ditambahkan.");
     }
@@ -86,8 +84,6 @@ class ProdukController extends Controller
             'gambar.max'           => 'Ukuran gambar maksimal 2MB.',
         ]);
 
-        $oldKategoriId = $produk->id_kategori;
-
         $data = [
             'nama_produk' => $request->nama_produk,
             'id_kategori' => $request->id_kategori,
@@ -105,22 +101,12 @@ class ProdukController extends Controller
 
         $produk->update($data);
 
-        // Sync kategori lama
-        $this->syncJumlahProduk($oldKategoriId);
-
-        // Sync kategori baru jika beda
-        if ($oldKategoriId != $request->id_kategori) {
-            $this->syncJumlahProduk($request->id_kategori);
-        }
-
         return redirect()->route('produk.index')
             ->with('success', "Produk \"{$produk->nama_produk}\" berhasil diupdate.");
     }
 
     public function destroy(Produk $produk)
     {
-        $idKategori = $produk->id_kategori;
-
         if ($produk->gambar) {
             Storage::disk('public')->delete($produk->gambar);
         }
@@ -128,22 +114,7 @@ class ProdukController extends Controller
         $nama = $produk->nama_produk;
         $produk->delete();
 
-        $this->syncJumlahProduk($idKategori);
-
         return redirect()->route('produk.index')
             ->with('success', "Produk \"{$nama}\" berhasil dihapus.");
-    }
-
-    /**
-     * Sinkronisasi kolom jumlah_produk pada tbl_kategori.
-     */
-    private function syncJumlahProduk(int|string $idKategori): void
-    {
-        $kategori = Kategori::find($idKategori);
-        if ($kategori) {
-            $kategori->update([
-                'jumlah_produk' => $kategori->produk()->count(),
-            ]);
-        }
     }
 }

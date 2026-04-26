@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admins = User::latest()->get();
+        $admins = User::orderBy('name')->get();
         return view('dashboard.admins', compact('admins'));
     }
 
@@ -22,13 +22,9 @@ class AdminController extends Controller
             'username' => 'required|string|max:50|unique:tbl_admin,username',
             'password' => 'required|string|min:6',
             'role'     => 'required|in:admin,superadmin',
+            'status'   => 'required|in:aktif,nonaktif',
         ], [
-            'name.required'     => 'Nama wajib diisi.',
-            'username.required' => 'Username wajib diisi.',
-            'username.unique'   => 'Username sudah dipakai.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min'      => 'Password minimal 6 karakter.',
-            'role.required'     => 'Role wajib dipilih.',
+            'username.unique' => 'Username sudah digunakan.',
         ]);
 
         User::create([
@@ -36,10 +32,11 @@ class AdminController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role'     => $request->role,
+            'status'   => $request->status,
         ]);
 
         return redirect()->route('admins.index')
-            ->with('success', "Admin \"{$request->name}\" berhasil ditambahkan.");
+                         ->with('success', 'Admin ' . $request->name . ' berhasil ditambahkan.');
     }
 
     public function update(Request $request, User $user)
@@ -47,20 +44,18 @@ class AdminController extends Controller
         $request->validate([
             'name'     => 'required|string|max:100',
             'username' => 'required|string|max:50|unique:tbl_admin,username,' . $user->id,
-            'role'     => 'required|in:admin,superadmin',
             'password' => 'nullable|string|min:6',
+            'role'     => 'required|in:admin,superadmin',
+            'status'   => 'required|in:aktif,nonaktif',
         ], [
-            'name.required'     => 'Nama wajib diisi.',
-            'username.required' => 'Username wajib diisi.',
-            'username.unique'   => 'Username sudah dipakai.',
-            'role.required'     => 'Role wajib dipilih.',
-            'password.min'      => 'Password minimal 6 karakter.',
+            'username.unique' => 'Username sudah digunakan.',
         ]);
 
         $data = [
             'name'     => $request->name,
             'username' => $request->username,
             'role'     => $request->role,
+            'status'   => $request->status,
         ];
 
         if ($request->filled('password')) {
@@ -70,20 +65,34 @@ class AdminController extends Controller
         $user->update($data);
 
         return redirect()->route('admins.index')
-            ->with('success', "Admin \"{$user->name}\" berhasil diupdate.");
+                         ->with('success', 'Admin ' . $request->name . ' berhasil diupdate.');
     }
 
     public function destroy(User $user)
     {
         if ($user->id === Auth::id()) {
-            return redirect()->route('admins.index')
-                ->with('error', 'Tidak bisa menghapus akun yang sedang login.');
+            return back()->with('error', 'Tidak dapat menghapus akun sendiri.');
         }
 
-        $name = $user->name;
+        $nama = $user->name;
         $user->delete();
 
         return redirect()->route('admins.index')
-            ->with('success', "Admin \"{$name}\" berhasil dihapus.");
+                         ->with('success', 'Admin ' . $nama . ' berhasil dihapus.');
+    }
+
+    // Toggle status aktif/nonaktif via AJAX atau redirect
+    public function toggleStatus(User $user)
+    {
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'Tidak dapat mengubah status akun sendiri.');
+        }
+
+        $user->update([
+            'status' => $user->status === 'aktif' ? 'nonaktif' : 'aktif'
+        ]);
+
+        $label = $user->status === 'aktif' ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', 'Admin ' . $user->name . ' berhasil ' . $label . '.');
     }
 }

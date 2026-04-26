@@ -12,15 +12,11 @@ class Kategori extends Model
 
     protected $fillable = [
         'nama_kategori',
-        'gambar',
-        'status',
-        'jumlah_produk',
     ];
 
     protected $casts = [
-        'jumlah_produk' => 'integer',
-        'created_at'    => 'datetime',
-        'updated_at'    => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
@@ -29,23 +25,5 @@ class Kategori extends Model
     public function produk(): HasMany
     {
         return $this->hasMany(Produk::class, 'id_kategori', 'id_kategori');
-    }
-
-    /**
-     * Relasi: hanya produk yang berstatus aktif.
-     */
-    public function produkAktif(): HasMany
-    {
-        return $this->hasMany(Produk::class, 'id_kategori', 'id_kategori')
-            ->where('status', 'aktif');
-    }
-
-    /**
-     * Scope: hanya kategori aktif.
-     * Penggunaan: Kategori::aktif()->get()
-     */
-    public function scopeAktif($query)
-    {
-        return $query->where('status', 'aktif');
     }
 }

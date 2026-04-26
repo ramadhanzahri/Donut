@@ -1,363 +1,324 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.public')
+@section('title', 'Beranda')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda — {{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@push('styles')
+<style>
+/* ═══ HERO ═══ */
+.hero{padding:88px 6% 72px;text-align:center;background:linear-gradient(160deg,#fff9fb 0%,#fff0f5 100%)}
+.hero-badge{display:inline-block;background:var(--pink-pale);color:var(--pink);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:6px 18px;border-radius:20px;margin-bottom:20px}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--text);line-height:1.2;margin-bottom:16px}
+.hero h2 em{color:var(--pink);font-style:italic}
+.hero p{font-size:16px;color:var(--text-mid);max-width:520px;margin:0 auto 32px}
+.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background: #fff;
-        }
+/* ═══ PRODUK FAVORIT ═══ */
+.section-pad{padding:64px 6%}
+.section-head{text-align:center;margin-bottom:36px}
+.section-head h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--text);margin-bottom:8px}
+.section-head p{font-size:14px;color:var(--text-light)}
+.produk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:24px}
+.produk-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);transition:transform var(--t),box-shadow var(--t)}
+.produk-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(242,117,117,.18)}
+.produk-card a{text-decoration:none;color:inherit;display:block}
+.card-img{width:100%;height:180px;object-fit:cover;background:#fde8f0}
+.card-img-placeholder{width:100%;height:180px;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:48px}
+.card-body{padding:16px}
+.card-body .kateg{font-size:11px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.card-body h3{font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.card-body .harga{font-size:16px;font-weight:700;color:var(--pink)}
 
-        /* NAV */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 8%;
-            background: #FFFEFA;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+/* ═══ PROFIL PERUSAHAAN ═══ */
+.profil-section{background:linear-gradient(135deg,#fff0f5 0%,#fff9fb 60%,#fff0f5 100%);padding:80px 6%}
+.profil-inner{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;max-width:1000px;margin:0 auto}
+.profil-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+.profil-logo-circle{width:160px;height:160px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 16px 48px rgba(242,117,117,.28)}
+.profil-logo-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);text-align:center}
+.profil-logo-tag{font-size:13px;color:var(--text-light);font-style:italic}
+.kontak-grid{display:flex;flex-direction:column;gap:10px;margin-top:20px;width:100%}
+.kontak-item{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 16px;text-decoration:none;transition:box-shadow var(--t),transform var(--t)}
+.kontak-item:hover{box-shadow:var(--shadow);transform:translateX(3px)}
+.kontak-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.kontak-icon.wa{background:#e8fdf1;color:#25D366}
+.kontak-icon.email{background:#eef4ff;color:#4285F4}
+.kontak-icon.alamat{background:var(--pink-pale);color:var(--pink)}
+.kontak-text strong{display:block;font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.kontak-text span{font-size:14px;font-weight:600;color:var(--text)}
+.profil-info h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,1.9rem);color:var(--text);margin-bottom:16px;line-height:1.3}
+.profil-info p{font-size:15px;color:var(--text-mid);line-height:1.9;margin-bottom:14px}
+.profil-nilai{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.nilai-item{display:flex;align-items:flex-start;gap:12px}
+.nilai-icon{width:36px;height:36px;border-radius:10px;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.nilai-text strong{display:block;font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.nilai-text span{font-size:13px;color:var(--text-mid)}
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+/* ═══ TENTANG KAMI ═══ */
+.tentang-section{padding:80px 6%}
+.tentang-section-head{text-align:center;margin-bottom:48px}
+.tentang-section-head h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--text);margin-bottom:10px}
+.tentang-section-head p{font-size:15px;color:var(--text-mid);max-width:500px;margin:0 auto}
+.vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:860px;margin:0 auto 56px}
+.vm-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+.vm-card .icon{font-size:36px;margin-bottom:16px}
+.vm-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--text);margin-bottom:12px}
+.vm-card p{font-size:14px;color:var(--text-mid);line-height:1.8}
 
-        .logo-section img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid #F27575;
-            object-fit: cover;
-        }
+/* ═══ SEJARAH TIMELINE ═══ */
+.sejarah-wrap{max-width:860px;margin:0 auto 60px}
+.sejarah-wrap .sub-head{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--text);margin-bottom:8px;text-align:center}
+.sejarah-wrap .sub-desc{font-size:14px;color:var(--text-light);text-align:center;margin-bottom:36px}
+.timeline{position:relative;padding-left:0}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--pink-light),var(--pink),var(--pink-light),transparent);transform:translateX(-50%)}
+.tl-item{display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:start;margin-bottom:36px}
+.tl-item:last-child{margin-bottom:0}
+.tl-content{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+.tl-item.left .tl-content{grid-column:1}
+.tl-item.left .tl-spacer{grid-column:2}
+.tl-item.left .tl-empty{grid-column:3}
+.tl-item.right .tl-empty{grid-column:1}
+.tl-item.right .tl-spacer{grid-column:2}
+.tl-item.right .tl-content{grid-column:3}
+.tl-dot{width:48px;display:flex;justify-content:center;align-items:flex-start;padding-top:18px}
+.tl-dot-inner{width:16px;height:16px;border-radius:50%;background:var(--pink);border:3px solid #fff;box-shadow:0 0 0 3px var(--pink-light)}
+.tl-year{display:inline-block;background:var(--pink);color:#fff;font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+.tl-content h4{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
+.tl-content p{font-size:13px;color:var(--text-mid);line-height:1.7}
 
-        .logo-text h1 {
-            font-size: 18px;
-            color: #F27575;
-            font-weight: bold;
-        }
+/* STATS */
+.stats-band{background:var(--pink-pale);border-radius:var(--radius-lg);padding:40px 32px;max-width:680px;margin:0 auto}
+.stats-band h3{font-family:'Playfair Display',serif;text-align:center;font-size:1.3rem;color:var(--text);margin-bottom:28px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.stat-item{background:#fff;border-radius:var(--radius);padding:24px 16px;text-align:center;box-shadow:var(--shadow)}
+.stat-item .num{font-size:2.2rem;font-weight:800;color:var(--pink);line-height:1;margin-bottom:8px}
+.stat-item p{font-size:13px;color:var(--text-mid);font-weight:600}
 
-        .logo-text p {
-            font-size: 11px;
-            color: #666;
-            margin-top: -3px;
-        }
+.divider-section{height:2px;background:linear-gradient(90deg,transparent,var(--pink-light),transparent);margin:0 6%}
 
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
+@media(max-width:768px){
+    .profil-inner{grid-template-columns:1fr}
+    .profil-logo-wrap{margin-bottom:4px}
+    .vm-grid{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:1fr 1fr}
+    .timeline::before{left:20px;transform:none}
+    .tl-item,.tl-item.left,.tl-item.right{display:block;padding-left:48px;position:relative}
+    .tl-dot{position:absolute;left:0;top:0;width:40px;padding-top:16px}
+    .tl-empty{display:none}
+    .tl-spacer{display:none}
+    .tl-content{margin:0}
+}
+</style>
+@endpush
 
-        .nav-links a {
-            text-decoration: none;
-            color: #444;
-            font-size: 14px;
-            font-weight: 600;
-            transition: .3s;
-        }
+@section('content')
 
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: #F27575;
-        }
-
-        .btn-wa {
-            background: #F27575;
-            color: #fff !important;
-            padding: 10px 22px;
-            border-radius: 20px;
-            font-size: 13px;
-            transition: .3s;
-        }
-
-        .btn-wa:hover {
-            background: #e06464;
-            box-shadow: 0 4px 12px rgba(242, 117, 117, .3);
-        }
-
-        /* HERO */
-        .hero {
-            display: flex;
-            min-height: calc(100vh - 75px);
-        }
-
-        .hero-left {
-            flex: 1;
-            background: linear-gradient(135deg, #F27575, #FFC6C9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 60px 8%;
-            color: #fff;
-        }
-
-        .hero-left h2 {
-            font-size: 52px;
-            line-height: 1.1;
-            margin-bottom: 20px;
-        }
-
-        .hero-left h2 span {
-            color: #FFFEFA;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, .1);
-        }
-
-        .hero-left p {
-            font-size: 18px;
-            margin-bottom: 35px;
-            opacity: .9;
-            max-width: 450px;
-            line-height: 1.6;
-        }
-
-        .hero-right {
-            flex: 1;
-            background:url('{{ asset("images/poto1beranda.jpg") }}') no-repeat center/cover;
-        }
-
-        /* PRODUK */
-        .produk-section {
-            position: relative;
-            padding: 80px 0;
-            background-image:url('{{ asset("images/pattern_donat.jpg") }}');
-            background-repeat: repeat;
-            background-size: 300px;
-        }
-
-        .produk-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, .70);
-        }
-
-        .produk-section h2 {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            color: #333;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .produk-grid {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 40px 5%;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
-            width: 300px;
-            flex-shrink: 0;
-            transition: transform .3s;
-        }
-
-        .card:hover {
-            transform: translateY(-6px);
-        }
-
-        .card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .card-label {
-            background: #F27575;
-            color: #fff;
-            padding: 15px 0;
-            font-weight: bold;
-            text-align: center;
-            font-size: 15px;
-        }
-
-        .card-harga {
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            color: #555;
-        }
-
-        /* FOOTER */
-        footer {
-            background: #1a1a1a;
-            color: #999;
-            padding: 60px 8% 40px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-
-        .footer-col h4 {
-            color: #fff;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .footer-col p,
-        .footer-col a {
-            color: #bbb;
-            font-size: 14px;
-            margin-bottom: 10px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .footer-col a:hover {
-            color: #F27575;
-        }
-
-        .footer-bottom {
-            background: #111;
-            color: #666;
-            text-align: center;
-            padding: 15px;
-            font-size: 13px;
-        }
-
-        @media(max-width:768px) {
-            .hero {
-                flex-direction: column;
-            }
-
-            .hero-left {
-                padding: 60px 8%;
-            }
-
-            .hero-right {
-                height: 280px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .produk-grid {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <nav>
-        <div class="logo-section">
-            @if($profile && $profile->logo && file_exists(storage_path('app/public/' . $profile->logo)))
-            <img src="{{ Storage::url($profile->logo) }}" alt="Logo">
-            @elseif(file_exists(public_path('images/logo.jpg')))
-            <img src="{{ asset('images/logo.jpg') }}" alt="Logo">
-            @else
-            <div class="logo-text">
-                <h1>{{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</h1>
-                <p>Maw-nya keterusan</p>
-            </div>
-            @endif
-            @if($profile && !$profile->logo && !file_exists(public_path('images/logo.jpg')))
-            <div class="logo-text">
-                <h1>{{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</h1>
-                <p>Maw-nya keterusan</p>
-            </div>
-            @endif
-        </div>
-        <div class="nav-links">
-            <a href="{{ route('beranda') }}" class="active">Beranda</a>
-            <a href="{{ route('profil') }}">Profile</a>
-            <a href="{{ route('tentang') }}">Tentang Kami</a>
-            <a href="{{ route('katalog') }}">Katalog Produk</a>
-            <a href="https://wa.me/{{ $profile->wa_number ?? '081528844756' }}"
-                class="btn-wa" target="_blank">Chat Via WhatsApp</a>
-        </div>
-    </nav>
-
-    <div class="hero">
-        <div class="hero-left">
-            <h2>Selamat Datang Di<br>
-                <span>{{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</span>
-            </h2>
-            <p>{{ $profile->deskripsi ?? 'Brand lokal yang menyajikan kebahagiaan lewat donat lembut dengan beragam topping kekinian.' }}</p>
-            <a href="https://wa.me/{{ $profile->wa_number ?? '081528844756' }}"
-                class="btn-wa"
-                style="width:fit-content; padding:18px 40px; font-size:16px; text-decoration:none;"
-                target="_blank">Chat Via WhatsApp</a>
-        </div>
-        <div class="hero-right" style="background:url('{{ asset('images/poto1beranda.jpg') }}') no-repeat center/cover;"></div>
+{{-- ══════════════════════ SECTION 1: HERO ══════════════════════ --}}
+<section id="beranda" class="hero">
+    <span class="hero-badge">🍩 Selamat Datang</span>
+    <h2>Donat Lezat,<br><em>Maw-nya Keterusan</em></h2>
+    <p>Brand lokal yang menyajikan donat lembut dengan beragam topping kekinian untuk semua momen spesial Anda.</p>
+    <div class="hero-cta">
+        <a href="{{ route('katalog') }}" class="btn-pink"><i class="fa-solid fa-shop"></i> Lihat Katalog</a>
+        <a href="#profil" class="btn-outline">Tentang Kami</a>
     </div>
+</section>
 
-    <section class="produk-section">
-        <h2>Produk Favorit</h2>
-        <div class="produk-grid">
-            @forelse($produkFavorit as $produk)
-            <a href="{{ route('katalog.detail', $produk->id_produk) }}" style="text-decoration:none;">
-                <div class="card">
-                    @if($produk->gambar)
-                    <img src="{{ Storage::url($produk->gambar) }}" alt="{{ $produk->nama_produk }}">
-                    @else
-                    <div style="height:250px; background:#fce4ec; display:flex;
-                                align-items:center; justify-content:center; font-size:60px;">🍩</div
-                        @endif
-                        <div class="card-label">{{ $produk->nama_produk }}
+{{-- Produk Favorit --}}
+<section class="section-pad">
+    <div class="section-head">
+        <h2>Produk Pilihan</h2>
+        <p>Donat-donat terlezat yang paling banyak digemari</p>
+    </div>
+    @if($produkFavorit->isEmpty())
+        <p style="text-align:center;color:var(--text-light);padding:40px 0">Belum ada produk tersedia.</p>
+    @else
+    <div class="produk-grid">
+        @foreach($produkFavorit as $p)
+        <div class="produk-card">
+            <a href="{{ route('katalog.detail', $p->id_produk) }}">
+                @if($p->gambar)
+                    <img class="card-img" src="{{ $p->gambar_url }}" alt="{{ $p->nama_produk }}"
+                         width="240" height="180" loading="lazy">
+                @else
+                    <div class="card-img-placeholder">🍩</div>
+                @endif
+                <div class="card-body">
+                    <p class="kateg">{{ $p->kategori->nama_kategori ?? '' }}</p>
+                    <h3>{{ $p->nama_produk }}</h3>
+                    <p class="harga">{{ $p->harga_rupiah }}</p>
                 </div>
-                <div class="card-harga">Rp {{ number_format($produk->harga, 0, ',', '.') }}</div>
+            </a>
         </div>
-        </a>
-        @empty
-        <p style="color:#999; position:relative; z-index:2;">Belum ada produk tersedia.</p>
-        @endforelse
-        </div>
-        <div style="text-align:center; position:relative; z-index:2; margin-top:10px;">
-            <a href="{{ route('katalog') }}" class="btn-wa"
-                style="display:inline-block; text-decoration:none;">Lihat Semua Produk →</a>
-        </div>
-    </section>
+        @endforeach
+    </div>
+    <div style="text-align:center;margin-top:36px">
+        <a href="{{ route('katalog') }}" class="btn-outline">Lihat Semua Produk <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    @endif
+</section>
 
-    <footer>
-        <div class="footer-col">
-            <h4>Kontak Kami</h4>
-            <p><i class="fas fa-map-marker-alt"></i> {{ $profile->alamat ?? 'Cabang Pusat' }}</p>
-            <p><i class="fab fa-whatsapp"></i> {{ $profile->telepon ?? '081528844756' }}</p>
-            <p><i class="fas fa-envelope"></i> {{ $profile->email ?? 'Mawmawdonut.Btg@Gmail.Com' }}</p>
-            <p>Jam Operasional: 08.00 – 22.00 WIB</p>
+<div class="divider-section"></div>
+
+{{-- ══════════════════ SECTION 2: PROFIL PERUSAHAAN (STATIS) ══════════════════ --}}
+<section id="profil" class="profil-section">
+    <div class="profil-inner">
+        <div class="profil-logo-wrap">
+            <div class="profil-logo-circle">🍩</div>
+            <p class="profil-logo-name">Maw Maw Donut</p>
+            <p class="profil-logo-tag">Brand Donat Lokal Indonesia</p>
+            <div class="kontak-grid">
+                <a class="kontak-item" href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <div class="kontak-icon wa"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="kontak-text">
+                        <strong>WhatsApp</strong>
+                        <span>+62 812-3456-7890</span>
+                    </div>
+                </a>
+                <a class="kontak-item" href="mailto:hello@mawmawdonut.id">
+                    <div class="kontak-icon email"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="kontak-text">
+                        <strong>Email</strong>
+                        <span>hello@mawmawdonut.id</span>
+                    </div>
+                </a>
+                <div class="kontak-item" style="cursor:default">
+                    <div class="kontak-icon alamat"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="kontak-text">
+                        <strong>Alamat</strong>
+                        <span>Jl. Donat Manis No. 1, Surabaya</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="footer-col">
-            <h4>Link Cepat</h4>
-            <a href="{{ route('beranda') }}">Beranda</a>
-            <a href="{{ route('tentang') }}">Tentang Kami</a>
-            <a href="{{ route('katalog') }}">Katalog Produk</a>
+        <div class="profil-info">
+            <h2>Kenalan Lebih Dekat dengan <span style="color:var(--pink)">Maw Maw Donut</span></h2>
+            <p>Maw Maw Donut adalah brand donat lokal yang hadir untuk menghadirkan kelezatan di setiap momen spesial Anda. Kami percaya bahwa makanan yang baik dimulai dari bahan-bahan pilihan.</p>
+            <p>Dibuat dengan cinta, disajikan dengan kehangatan — karena setiap gigitan harus berkesan.</p>
+            <div class="profil-nilai">
+                <div class="nilai-item">
+                    <div class="nilai-icon">🌾</div>
+                    <div class="nilai-text">
+                        <strong>Bahan Pilihan</strong>
+                        <span>Menggunakan bahan berkualitas tinggi tanpa bahan pengawet berbahaya</span>
+                    </div>
+                </div>
+                <div class="nilai-item">
+                    <div class="nilai-icon">✨</div>
+                    <div class="nilai-text">
+                        <strong>Inovasi Rasa</strong>
+                        <span>Selalu menghadirkan varian topping baru yang kekinian dan unik</span>
+                    </div>
+                </div>
+                <div class="nilai-item">
+                    <div class="nilai-icon">❤️</div>
+                    <div class="nilai-text">
+                        <strong>Dibuat dengan Cinta</strong>
+                        <span>Setiap donat diproduksi secara higienis dengan standar kebersihan tinggi</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
-    <div class="footer-bottom">
-        &copy; {{ date('Y') }} {{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}. All rights reserved.
+    </div>
+</section>
+
+<div class="divider-section"></div>
+
+{{-- ════════════════════════ SECTION 3: TENTANG KAMI ════════════════════════ --}}
+<section id="tentang" class="tentang-section">
+    <div class="tentang-section-head">
+        <span class="badge-kateg">Tentang Kami</span>
+        <h2 style="margin-top:12px">Visi &amp; Misi Kami</h2>
+        <p>Landasan yang mengarahkan setiap langkah kami dalam menghadirkan yang terbaik.</p>
     </div>
 
-</body>
+    {{-- Visi Misi --}}
+    <div class="vm-grid">
+        <div class="vm-card">
+            <div class="icon">🎯</div>
+            <h3>Visi</h3>
+            <p>Menjadi brand donat lokal nomor satu yang dikenal dengan kelezatan, inovasi, dan kehangatan di setiap gigitan — menghadirkan kebahagiaan manis untuk seluruh keluarga Indonesia.</p>
+        </div>
+        <div class="vm-card">
+            <div class="icon">🚀</div>
+            <h3>Misi</h3>
+            <p>Menghadirkan produk donat berkualitas tinggi, konsisten dalam rasa, berinovasi dengan topping kekinian, serta memberikan pengalaman berbelanja yang menyenangkan bagi setiap pelanggan.</p>
+        </div>
+    </div>
 
-</html>
+    {{-- ══ SEJARAH PERUSAHAAN ══ --}}
+    <div class="sejarah-wrap">
+        <h3 class="sub-head">Sejarah Perusahaan</h3>
+        <p class="sub-desc">Perjalanan panjang kami menghadirkan donat lezat untuk semua</p>
+
+        <div class="timeline">
+
+            {{-- 2018 --}}
+            <div class="tl-item left">
+                <div class="tl-content">
+                    <span class="tl-year">2018</span>
+                    <h4>Lahirnya Maw Maw Donut</h4>
+                    <p>Berawal dari dapur rumahan di Surabaya, Maw Maw Donut hadir dengan 5 varian donat sederhana yang dibuat dengan cinta dan dijual lewat media sosial.</p>
+                </div>
+                <div class="tl-spacer">
+                    <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                </div>
+                <div class="tl-empty"></div>
+            </div>
+
+            {{-- 2019 --}}
+            <div class="tl-item right">
+                <div class="tl-empty"></div>
+                <div class="tl-spacer">
+                    <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                </div>
+                <div class="tl-content">
+                    <span class="tl-year">2019</span>
+                    <h4>Respon Luar Biasa</h4>
+                    <p>Dalam setahun, pesanan melonjak drastis. Kami mulai membuka pre-order harian dan memperluas tim produksi untuk memenuhi permintaan pelanggan yang terus bertambah.</p>
+                </div>
+            </div>
+
+            {{-- 2020 --}}
+            <div class="tl-item left">
+                <div class="tl-content">
+                    <span class="tl-year">2020</span>
+                    <h4>Buka Toko Pertama</h4>
+                    <p>Maw Maw Donut resmi membuka gerai fisik pertama di Surabaya. Antrian panjang sejak hari pertama membuktikan kepercayaan masyarakat terhadap brand kami.</p>
+                </div>
+                <div class="tl-spacer">
+                    <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                </div>
+                <div class="tl-empty"></div>
+            </div>
+
+            {{-- 2022 --}}
+            <div class="tl-item right">
+                <div class="tl-empty"></div>
+                <div class="tl-spacer">
+                    <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                </div>
+                <div class="tl-content">
+                    <span class="tl-year">2022</span>
+                    <h4>Ekspansi &amp; Inovasi</h4>
+                    <p>Menambah lebih dari 20 varian topping baru dan mulai masuk ke platform marketplace online, menjangkau pelanggan di seluruh Jawa Timur.</p>
+                </div>
+            </div>
+
+            {{-- 2024 --}}
+            <div class="tl-item left">
+                <div class="tl-content">
+                    <span class="tl-year">2024</span>
+                    <h4>Maw Maw Donut Hari Ini</h4>
+                    <p>Kini hadir dengan puluhan varian produk unggulan, melayani ribuan pelanggan setia, dan terus berkomitmen menghadirkan inovasi rasa yang kekinian dan berkualitas.</p>
+                </div>
+                <div class="tl-spacer">
+                    <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                </div>
+                <div class="tl-empty"></div>
+            </div>
+
+        </div>{{-- end .timeline --}}
+    </div>{{-- end .sejarah-wrap --}}
+
+    {{-- Stats --}}
+</section>
+
+@endsection

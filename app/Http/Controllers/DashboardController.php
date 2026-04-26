@@ -2,23 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Kategori;
 use App\Models\Produk;
+use App\Models\Kategori;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $stats = [
-            'total_user'     => User::count(),
-            'superadmin'     => User::where('role', 'superadmin')->count(),
-            'admin'          => User::where('role', 'admin')->count(),
-            'total_kategori' => Kategori::count(),
-            'total_produk'   => Produk::count(),
-            'aktif_produk'   => Produk::where('status', 'aktif')->count(),
-        ];
+        $totalProduk     = Produk::count();
+        $totalProdukAktif= Produk::where('status', 'aktif')->count();
+        $totalKategori   = Kategori::count();
+        $totalAdmin      = User::count();
 
-        return view('dashboard.index', compact('stats'));
+        $produkTerbaru   = Produk::with('kategori')
+                            ->latest()
+                            ->take(5)
+                            ->get();
+
+        $kategoris       = Kategori::withCount('produk')
+                            ->orderBy('nama_kategori')
+                            ->get();
+
+        return view('dashboard.index', compact(
+            'totalProduk',
+            'totalProdukAktif',
+            'totalKategori',
+            'totalAdmin',
+            'produkTerbaru',
+            'kategoris'
+        ));
     }
 }

@@ -1,253 +1,95 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $produk->nama_produk }} - {{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #FFC0CB; overflow-x: hidden; }
+@extends('layouts.public')
+@section('title', $produk->nama_produk)
+@section('metadesc', Str::limit(strip_tags($produk->deskripsi ?? 'Produk dari Maw Maw Donut'), 160))
 
-        /* NAVBAR */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 8%; background-color: #FFFEFA;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .logo-section { display: flex; align-items: center; gap: 12px; }
-        .logo-section img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #F27575; }
-        .logo-text h3 { font-size: 18px; color: #F27575; font-weight: bold; margin: 0; }
-        .logo-text small { font-size: 11px; color: #666; display: block; margin-top: -3px; }
-        .nav-links { display: flex; gap: 25px; align-items: center; }
-        .nav-links a { text-decoration: none; color: #444; font-size: 14px; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: #F27575; }
-        .btn-wa { background-color: #F27575; color: white !important; padding: 10px 22px; border-radius: 20px; font-size: 13px; font-weight: bold; }
+@push('styles')
+<style>
+.detail-wrap{padding:48px 6%;max-width:1100px;margin:0 auto}
+.breadcrumb{font-size:13px;color:var(--text-light);margin-bottom:28px;display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--text-mid);text-decoration:none}.breadcrumb a:hover{color:var(--pink)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.detail-img{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);background:var(--pink-pale)}
+.detail-img img{width:100%;aspect-ratio:1;object-fit:cover}
+.detail-img .no-img{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:80px}
+.detail-info .kateg{font-size:12px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.detail-info h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--text);margin-bottom:16px;line-height:1.25}
+.detail-info .harga{font-size:2rem;font-weight:800;color:var(--pink);margin-bottom:20px}
+.detail-info .desc{font-size:15px;color:var(--text-mid);line-height:1.85;margin-bottom:24px}
+.badge-nonaktif{display:inline-block;background:#ffe5e5;color:#e53935;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:16px}
+.related-section{padding:0 6% 64px}
+.related-section h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:24px;color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(180px,100%),1fr));gap:18px}
+.rel-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform var(--t)}
+.rel-card:hover{transform:translateY(-3px)}
+.rel-img{width:100%;height:130px;object-fit:cover;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:36px}
+.rel-body{padding:12px}
+.rel-body p{font-size:13px;font-weight:700;margin-bottom:4px}
+.rel-body span{font-size:13px;color:var(--pink);font-weight:700}
+@media(max-width:768px){.detail-grid{grid-template-columns:1fr}}
+</style>
+@endpush
 
-        /* BREADCRUMB */
-        .breadcrumb { background: #fff0f3; padding: 12px 8%; font-size: 13px; color: #888; }
-        .breadcrumb a { color: #F27575; text-decoration: none; }
-        .breadcrumb a:hover { text-decoration: underline; }
-        .breadcrumb span { margin: 0 6px; }
-
-        /* DETAIL WRAPPER */
-        .detail-wrapper { max-width: 960px; margin: 40px auto; padding: 0 20px 60px; }
-
-        .detail-card {
-            background: white; border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            overflow: hidden; display: flex;
-        }
-
-        /* GAMBAR KIRI */
-        .detail-img-wrap { width: 45%; flex-shrink: 0; }
-        .detail-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 420px; }
-        .no-image {
-            width: 100%; min-height: 420px;
-            background: linear-gradient(135deg, #FFC0CB, #F27575);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            color: white; font-size: 60px;
-        }
-        .no-image p { font-size: 14px; margin-top: 10px; opacity: 0.8; }
-
-        /* INFO KANAN */
-        .detail-info { flex: 1; padding: 40px 35px; display: flex; flex-direction: column; justify-content: center; }
-        .badge-kategori {
-            display: inline-block; background: #fff0f3; color: #F27575;
-            border: 1.5px solid #F27575; padding: 4px 14px; border-radius: 20px;
-            font-size: 12px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.5px; margin-bottom: 16px;
-        }
-        .detail-info h1 { font-size: 28px; color: #333; font-weight: 800; line-height: 1.3; margin-bottom: 12px; }
-        .detail-harga { font-size: 26px; font-weight: bold; color: #F27575; margin-bottom: 20px; }
-        .divider { height: 2px; background: #FFC0CB; border-radius: 4px; margin-bottom: 20px; }
-        .detail-deskripsi { font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 30px; }
-        .detail-deskripsi.empty { color: #aaa; font-style: italic; }
-
-        /* TOMBOL */
-        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
-        .btn-wa-detail {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: #F27575; color: white;
-            padding: 13px 28px; border-radius: 30px;
-            font-size: 15px; font-weight: bold; text-decoration: none;
-            transition: 0.3s; box-shadow: 0 4px 15px rgba(242,117,117,0.35);
-        }
-        .btn-wa-detail:hover { background: #e06464; transform: translateY(-2px); }
-        .btn-kembali-detail {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: white; color: #F27575; border: 2px solid #F27575;
-            padding: 13px 28px; border-radius: 30px;
-            font-size: 15px; font-weight: bold; text-decoration: none; transition: 0.3s;
-        }
-        .btn-kembali-detail:hover { background: #fff0f3; }
-
-        /* PRODUK LAINNYA */
-        .produk-lain-section { margin-top: 50px; }
-        .produk-lain-section h2 { text-align: center; color: #333; font-size: 22px; font-weight: bold; margin-bottom: 25px; }
-        .produk-lain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .produk-lain-card {
-            background: white; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            text-decoration: none; color: inherit; transition: 0.3s; display: block;
-        }
-        .produk-lain-card:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.12); }
-        .produk-lain-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
-        .produk-lain-img-placeholder {
-            width: 100%; height: 160px;
-            background: linear-gradient(135deg, #FFC0CB, #F27575);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 36px; color: white;
-        }
-        .produk-lain-info { padding: 14px; }
-        .produk-lain-info p { font-weight: bold; color: #F27575; font-size: 14px; }
-        .produk-lain-info span { font-size: 13px; color: #444; font-weight: 600; }
-
-        /* FOOTER */
-        footer { background-color: #1a1a1a; color: white; padding: 50px 8%; }
-        .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; }
-        .footer-column h3 { margin-bottom: 15px; }
-        .footer-column ul { list-style: none; }
-        .footer-column ul li { margin-bottom: 8px; color: #ccc; font-size: 14px; }
-        .social-icons img { width: 28px; margin-right: 12px; filter: invert(1); }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .detail-card { flex-direction: column; }
-            .detail-img-wrap { width: 100%; }
-            .detail-img-wrap img, .no-image { min-height: 260px; }
-            .detail-info { padding: 25px 20px; }
-            .detail-info h1 { font-size: 22px; }
-            .nav-links { display: none; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- NAVBAR -->
-    <nav>
-        <div class="logo-section">
-            @if(isset($profile->logo) && $profile->logo)
-                <img src="{{ Storage::url($profile->logo) }}" alt="Logo">
-            @else
-                <img src="{{ asset('images/logo.jpg') }}" alt="Logo">
-            @endif
-            <div class="logo-text">
-                <h3>{{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</h3>
-                <small>Maw-nya keterusan</small>
-            </div>
-        </div>
-        <div class="nav-links">
-            <a href="{{ route('beranda') }}">Beranda</a>
-            <a href="{{ route('tentang') }}">Tentang Kami</a>
-            <a href="{{ route('katalog') }}" style="color: #F27575;">Katalog Produk</a>
-            <a href="https://wa.me/081528844756" class="btn-wa" target="_blank">Chat Via WhatsApp</a>
-        </div>
-    </nav>
-
-    <!-- BREADCRUMB -->
+<div class="detail-wrap">
+    {{-- Breadcrumb --}}
     <div class="breadcrumb">
         <a href="{{ route('beranda') }}">Beranda</a>
-        <span>›</span>
-        <a href="{{ route('katalog') }}">Katalog Produk</a>
-        <span>›</span>
-        {{ $produk->nama_produk }}
+        <i class="fa-solid fa-chevron-right" style="font-size:10px"></i>
+        <a href="{{ route('katalog') }}">Katalog</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:10px"></i>
+        <span style="color:var(--pink)">{{ $produk->nama_produk }}</span>
     </div>
 
-    <!-- DETAIL PRODUK -->
-    <div class="detail-wrapper">
-        <div class="detail-card">
-
-            <!-- GAMBAR -->
-            <div class="detail-img-wrap">
-                @if($produk->gambar)
-                    <img src="{{ Storage::url($produk->gambar) }}" alt="{{ $produk->nama_produk }}">
-                @else
-                    <div class="no-image">
-                        <i class="fa-solid fa-image"></i>
-                        <p>Foto tidak tersedia</p>
-                    </div>
-                @endif
-            </div>
-
-            <!-- INFO -->
-            <div class="detail-info">
-                @if($produk->kategori)
-                    <span class="badge-kategori">
-                        {{ is_object($produk->kategori) ? $produk->kategori->nama : $produk->kategori }}
-                    </span>
-                @endif
-
-                <h1>{{ $produk->nama_produk }}</h1>
-                <div class="detail-harga">Rp {{ number_format($produk->harga, 0, ',', '.') }}</div>
-                <div class="divider"></div>
-
-                @if(!empty($produk->deskripsi))
-                    <p class="detail-deskripsi">{{ $produk->deskripsi }}</p>
-                @else
-                    <p class="detail-deskripsi empty">Deskripsi produk belum tersedia.</p>
-                @endif
-
-                <div class="btn-group">
-                    <a href="https://wa.me/{{ $profile->wa_number ?? '081528844756' }}?text=Halo%20{{ urlencode($profile->nama_perusahaan ?? 'Maw Maw Donut') }},%20saya%20ingin%20memesan%20{{ urlencode($produk->nama_produk) }}"
-                       class="btn-wa-detail" target="_blank">
-                        <i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp
-                    </a>
-                    <a href="{{ route('katalog') }}" class="btn-kembali-detail">
-                        <i class="fa-solid fa-arrow-left"></i> Kembali
-                    </a>
-                </div>
-            </div>
+    <div class="detail-grid">
+        {{-- Gambar --}}
+        <div class="detail-img">
+            @if($produk->gambar)
+                <img src="{{ $produk->gambar_url }}" alt="{{ $produk->nama_produk }}" loading="eager">
+            @else
+                <div class="no-img">🍩</div>
+            @endif
         </div>
 
-        <!-- PRODUK LAINNYA -->
-        @if(isset($related) && $related->count() > 0)
-        <div class="produk-lain-section">
-            <h2>Produk Lainnya</h2>
-            <div class="produk-lain-grid">
-                @foreach($related as $item)
-                <a href="{{ route('katalog.detail', $item->id_produk) }}" class="produk-lain-card">
-                    @if($item->gambar)
-                        <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->nama_produk }}">
-                    @else
-                        <div class="produk-lain-img-placeholder">
-                            <i class="fa-solid fa-cookie-bite"></i>
-                        </div>
-                    @endif
-                    <div class="produk-lain-info">
-                        <p>{{ $item->nama_produk }}</p>
-                        <span>Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
-                    </div>
-                </a>
-                @endforeach
+        {{-- Info --}}
+        <div class="detail-info">
+            @if($produk->status == 'nonaktif')
+                <span class="badge-nonaktif">⛔ Stok Habis</span>
+            @endif
+            <p class="kateg">{{ $produk->kategori->nama_kategori ?? 'Produk' }}</p>
+            <h1>{{ $produk->nama_produk }}</h1>
+            <div class="harga">{{ $produk->harga_rupiah }}</div>
+            <div class="desc">
+                @if($produk->deskripsi)
+                    {!! nl2br(e($produk->deskripsi)) !!}
+                @else
+                    <em style="color:var(--text-light)">Deskripsi produk belum tersedia.</em>
+                @endif
             </div>
+            <a href="{{ route('katalog') }}" class="btn-outline" style="align-self:flex-start">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
+            </a>
         </div>
-        @endif
     </div>
+</div>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>Kontak Kami</h3>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> {{ $profile->alamat ?? 'Cabang Pusat Maw Maw Donut' }}</li>
-                    <li><i class="fas fa-phone"></i> {{ $profile->telepon ?? '081528844756' }}</li>
-                    <li>{{ $profile->email ?? 'Mawmawdonut.Btg@Gmail.Com' }}</li>
-                    <li>Jam Operasional 08.00 - 22.00 WIB</li>
-                </ul>
+{{-- Produk Terkait --}}
+@if($related->isNotEmpty())
+<section class="related-section">
+    <h3>Produk Terkait</h3>
+    <div class="related-grid">
+        @foreach($related as $item)
+        <a class="rel-card" href="{{ route('katalog.detail', $item->id_produk) }}">
+            @if($item->gambar)
+                <img class="rel-img" src="{{ $item->gambar_url }}" alt="{{ $item->nama_produk }}"
+                     width="180" height="130" loading="lazy" style="display:block;object-fit:cover">
+            @else
+                <div class="rel-img">🍩</div>
+            @endif
+            <div class="rel-body">
+                <p>{{ $item->nama_produk }}</p>
+                <span>{{ $item->harga_rupiah }}</span>
             </div>
-            <div class="footer-column">
-                <h3>Ikuti Kami</h3>
-                <div class="social-icons">
-                    <img src="{{ asset('images/ig-icon.png') }}" alt="Instagram">
-                    <img src="{{ asset('images/fb-icon.png') }}" alt="Facebook">
-                </div>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+        </a>
+        @endforeach
+    </div>
+</section>
+@endif
