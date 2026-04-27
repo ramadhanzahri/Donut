@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
-    // Profile statis — tidak butuh model/database
     private function getProfile()
     {
         return (object)[
@@ -18,8 +17,8 @@ class PublicController extends Controller
             'wa_number'       => '081528844756',
             'email'           => 'mawmawdonut@gmail.com',
             'alamat'          => 'Cabang Pusat Maw Maw Donut',
-            'logo'            => null,   // isi path logo jika ada
-            'maps_embed'      => null,   // isi URL embed Google Maps jika ada
+            'logo'            => null,
+            'maps_embed'      => null,
         ];
     }
 
@@ -34,6 +33,23 @@ class PublicController extends Controller
         return view('public.beranda', compact('produkFavorit', 'profile'));
     }
 
+    // ── Halaman Produk: semua produk aktif + fitur search ─────────────────────
+    public function produk(Request $request)
+    {
+        $query = Produk::with('kategori')->where('status', 'aktif');
+
+        if ($request->filled('q')) {
+            $query->where('nama_produk', 'like', '%' . $request->q . '%');
+        }
+
+        $produks = $query->latest()->get();
+        $total   = Produk::where('status', 'aktif')->count();
+        $profile = $this->getProfile();
+
+        return view('public.produk', compact('produks', 'total', 'profile'));
+    }
+
+    // ── Halaman Katalog: filter kategori + sort + search ──────────────────────
     public function katalog(Request $request)
     {
         $kategoris = Kategori::withCount([
@@ -81,5 +97,11 @@ class PublicController extends Controller
     {
         $profile = $this->getProfile();
         return view('public.tentang', compact('profile'));
+    }
+
+    public function profil()
+    {
+        $profile = $this->getProfile();
+        return view('public.profil', compact('profile'));
     }
 }
