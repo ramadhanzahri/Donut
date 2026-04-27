@@ -142,14 +142,10 @@
 <nav class="navbar" id="navbar">
     {{-- Logo --}}
     <a class="logo-wrap" href="{{ route('beranda') }}">
-        @if($profile->logo ?? null)
-            <img class="logo-img" src="{{ Storage::url($profile->logo) }}"
-                 alt="{{ $profile->nama_perusahaan ?? 'Logo' }}" width="46" height="46" loading="eager">
-        @else
-            <div class="logo-fallback" aria-hidden="true">🍩</div>
-        @endif
+        <img class="logo-img" src="{{ asset('images/logo.jpg') }}"
+             alt="Maw Maw Donut" width="46" height="46" loading="eager">
         <div class="logo-text">
-            <h1>{{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}</h1>
+            <h1>Maw Maw Donut</h1>
             <small>Maw-nya keterusan</small>
         </div>
     </a>

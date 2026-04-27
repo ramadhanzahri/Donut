@@ -294,7 +294,7 @@
     <div class="profil-inner">
         <div class="profil-logo-wrap">
             <div class="profil-logo-circle">
-                🍩
+                <img src="{{ asset('images/logo.jpg') }}" alt="Logo Maw Maw Donut" loading="lazy">
             </div>
             <p class="profil-logo-name">Maw Maw Donut</p>
             <p class="profil-logo-tag">Brand Donat Lokal Indonesia</p>
