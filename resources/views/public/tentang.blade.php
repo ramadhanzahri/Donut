@@ -6,28 +6,40 @@
 <style>
 /* ── HERO ── */
 .tentang-hero{
-    background:linear-gradient(135deg,var(--pink),var(--pink-light));
+    position:relative;overflow:hidden;
     padding:60px 6%;color:#fff;text-align:center;
 }
+.tentang-hero::before{content:'';position:absolute;inset:0;
+    background:url('/images/tentang_bg.jpg') center/cover no-repeat;z-index:0;filter:brightness(.75)}
+.tentang-hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(242,117,117,.8),rgba(255,198,201,.6));z-index:1}
+.tentang-hero>*{position:relative;z-index:2}
 .tentang-hero h1{
     font-family:'Playfair Display',serif;
     font-size:clamp(2rem,5vw,2.5rem);
     font-weight:700;
     margin-bottom:12px;
+    text-shadow:0 2px 12px rgba(0,0,0,.18);
 }
 .tentang-hero p{
     font-size:16px;
-    opacity:.9;
+    opacity:.95;
     max-width:560px;
     margin:0 auto;
     line-height:1.7;
+    text-shadow:0 1px 6px rgba(0,0,0,.12);
 }
 
 /* ── VISI MISI ── */
 .visimisi-section{
     padding:80px 6%;
     background:#fff;
+    position:relative;overflow:hidden;
 }
+.visimisi-section::before{content:'';position:absolute;inset:0;
+    background:url('/images/pattern_donat.jpg') repeat;background-size:320px;
+    opacity:.04;pointer-events:none;z-index:0}
+.visimisi-section>*{position:relative;z-index:1}
 .visimisi-section h2{
     text-align:center;
     font-family:'Playfair Display',serif;
@@ -107,8 +119,13 @@
 /* ── PENCAPAIAN ── */
 .achiev-section{
     padding:80px 6%;
-    background:var(--pink-blush);
+    position:relative;overflow:hidden;
 }
+.achiev-section::before{content:'';position:absolute;inset:0;
+    background:url('/images/interior_1.jpg') center/cover no-repeat;opacity:.06;pointer-events:none;z-index:0}
+.achiev-section::after{content:'';position:absolute;inset:0;
+    background:var(--pink-blush);opacity:.92;z-index:0}
+.achiev-section>*{position:relative;z-index:1}
 .achiev-section h2{
     text-align:center;
     font-family:'Playfair Display',serif;

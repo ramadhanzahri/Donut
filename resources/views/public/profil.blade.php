@@ -6,21 +6,28 @@
 <style>
 /* ── HERO ── */
 .profil-hero{
-    background:linear-gradient(135deg,var(--pink),var(--pink-light));
+    position:relative;overflow:hidden;
     padding:60px 6%;color:#fff;text-align:center;
 }
+.profil-hero::before{content:'';position:absolute;inset:0;
+    background:url('/images/bg_tentangkami.jpg') center/cover no-repeat;z-index:0;filter:brightness(.7)}
+.profil-hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(242,117,117,.82),rgba(255,198,201,.65));z-index:1}
+.profil-hero>*{position:relative;z-index:2}
 .profil-hero h1{
     font-family:'Playfair Display',serif;
     font-size:clamp(2rem,5vw,2.5rem);
     font-weight:700;
     margin-bottom:12px;
+    text-shadow:0 2px 12px rgba(0,0,0,.18);
 }
 .profil-hero p{
     font-size:16px;
-    opacity:.9;
+    opacity:.95;
     max-width:560px;
     margin:0 auto;
     line-height:1.7;
+    text-shadow:0 1px 6px rgba(0,0,0,.12);
 }
 
 /* ── PROFIL SECTION ── */
@@ -125,7 +132,11 @@
 .sejarah-section{
     padding:80px 6%;
     background:#fff;
+    position:relative;overflow:hidden;
 }
+.sejarah-section::before{content:'';position:absolute;inset:0;
+    background:url('/images/tentang_bg.jpg') center/cover no-repeat;opacity:.04;pointer-events:none;z-index:0}
+.sejarah-section>*{position:relative;z-index:1}
 .sejarah-container h2{
     font-family:'Playfair Display',serif;
     font-size:clamp(1.4rem,3vw,1.8rem);
@@ -195,9 +206,13 @@
 
 /* ── INFO KONTAK ── */
 .info-section{
-    background:var(--pink-blush);
+    position:relative;overflow:hidden;
     padding:80px 6%;
 }
+.info-section::before{content:'';position:absolute;inset:0;
+    background:url('/images/pattern_donat.jpg') repeat;background-size:300px;
+    opacity:.05;pointer-events:none;z-index:0}
+.info-section>*{position:relative;z-index:1}
 .info-section h2{
     text-align:center;
     font-family:'Playfair Display',serif;

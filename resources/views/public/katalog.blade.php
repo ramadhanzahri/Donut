@@ -7,17 +7,23 @@
 <style>
 /* ── HERO ── */
 .katalog-hero{
-    background:linear-gradient(135deg,var(--pink) 0%,#ffb3ba 100%);
+    position:relative;overflow:hidden;
     padding:60px 6% 50px;
     text-align:center;
     color:#fff;
 }
+.katalog-hero::before{content:'';position:absolute;inset:0;
+    background:url('/images/interior2.jpg') center/cover no-repeat;z-index:0;filter:brightness(.65)}
+.katalog-hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(242,117,117,.78) 0%,rgba(255,179,186,.55) 100%);z-index:1}
+.katalog-hero>*{position:relative;z-index:2}
 .katalog-hero h1{
     font-family:'Playfair Display',serif;
     font-size:clamp(2rem,5vw,3rem);
     margin-bottom:10px;
+    text-shadow:0 2px 12px rgba(0,0,0,.2);
 }
-.katalog-hero p{font-size:15px;opacity:.9}
+.katalog-hero p{font-size:15px;opacity:.95;text-shadow:0 1px 6px rgba(0,0,0,.12)}
 
 /* ── SEARCH BAR ── */
 .search-section{

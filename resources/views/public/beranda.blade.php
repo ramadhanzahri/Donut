@@ -4,7 +4,12 @@
 @push('styles')
 <style>
 /* ═══ HERO ═══ */
-.hero{padding:88px 6% 72px;text-align:center;background:linear-gradient(160deg,#fff9fb 0%,#fff0f5 100%)}
+.hero{padding:88px 6% 72px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+    background:url('/images/poto1beranda.jpg') center/cover no-repeat;z-index:0;filter:blur(2px) brightness(.85)}
+.hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(160deg,rgba(255,240,245,.92) 0%,rgba(242,117,117,.72) 100%);z-index:1}
+.hero>*{position:relative;z-index:2}
 .hero-badge{display:inline-block;background:var(--pink-pale);color:var(--pink);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:6px 18px;border-radius:20px;margin-bottom:20px}
 .hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--text);line-height:1.2;margin-bottom:16px}
 .hero h2 em{color:var(--pink);font-style:italic}
@@ -122,7 +127,7 @@
 </section>
 
 {{-- Produk Favorit --}}
-<section class="section-pad">
+<section class="section-pad section-bg-pattern">
     <div class="section-head">
         <h2>Produk Pilihan</h2>
         <p>Donat-donat terlezat yang paling banyak digemari</p>
@@ -155,6 +160,6 @@
     @endif
 </section>
 
-<div class="divider-section"></div>
+<div class="frosting-divider"></div>
 
 @endsection

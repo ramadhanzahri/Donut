@@ -5,19 +5,20 @@
 <style>
 /* ── HERO ── */
 .produk-hero{
-    background:linear-gradient(135deg,var(--pink),var(--pink-light));
-    padding:60px 6%;color:#fff;text-align:center;
     position:relative;overflow:hidden;
+    padding:60px 6%;color:#fff;text-align:center;
 }
-.produk-hero::before{
-    content:'🍩';font-size:160px;position:absolute;right:-20px;top:-30px;
-    opacity:.08;pointer-events:none;line-height:1;
-}
+.produk-hero::before{content:'';position:absolute;inset:0;
+    background:url('/images/interior_1.jpg') center/cover no-repeat;z-index:0;filter:brightness(.65)}
+.produk-hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(242,117,117,.75),rgba(255,179,186,.55));z-index:1}
+.produk-hero>*{position:relative;z-index:2}
 .produk-hero h1{
     font-family:'Playfair Display',serif;
     font-size:clamp(28px,5vw,48px);font-weight:700;margin-bottom:10px;
+    text-shadow:0 2px 12px rgba(0,0,0,.2);
 }
-.produk-hero p{font-size:15px;opacity:.9;max-width:480px;margin:0 auto}
+.produk-hero p{font-size:15px;opacity:.95;max-width:480px;margin:0 auto;text-shadow:0 1px 6px rgba(0,0,0,.12)}
 
 /* ── SEARCH BAR ── */
 .search-section{

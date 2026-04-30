@@ -25,7 +25,29 @@
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{scroll-behavior:smooth}
         body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--text);
-             -webkit-font-smoothing:antialiased;line-height:1.6}
+             -webkit-font-smoothing:antialiased;line-height:1.6;
+             background-image:url('/images/pattern_donat.jpg');
+             background-repeat:repeat;background-size:420px;
+             background-attachment:fixed;background-blend-mode:overlay;
+             background-color:rgba(255,255,255,.93)}
+
+        /* ── PAGE BG IMAGE HERO ── */
+        .page-hero-bg{position:relative;overflow:hidden}
+        .page-hero-bg::before{content:'';position:absolute;inset:0;
+            background-size:cover;background-position:center;z-index:0}
+        .page-hero-bg::after{content:'';position:absolute;inset:0;z-index:1}
+        .page-hero-bg>*{position:relative;z-index:2}
+
+        /* ── SECTION PATTERN DIVIDER ── */
+        .section-bg-pattern{position:relative;overflow:hidden}
+        .section-bg-pattern::before{content:'';position:absolute;inset:0;
+            background-image:url('/images/pattern_donat.jpg');background-size:300px;
+            background-repeat:repeat;opacity:.04;pointer-events:none;z-index:0}
+        .section-bg-pattern>*{position:relative;z-index:1}
+
+        /* ── FROSTING DIVIDER ── */
+        .frosting-divider{width:100%;height:120px;background:url('/images/bg2.jpg') top center/cover no-repeat;
+            margin:0;display:block;opacity:.85;pointer-events:none}
         img{display:block;max-width:100%;height:auto}
         a{color:inherit;transition:color var(--t)}
         button{cursor:pointer;font:inherit}
@@ -237,7 +259,6 @@
     </div>
     <div class="footer-bottom">
         &copy; {{ date('Y') }} {{ $profile->nama_perusahaan ?? 'Maw Maw Donut' }}. All rights reserved. &nbsp;&nbsp;
-        <a href="{{ route('login') }}" style="color:#555;text-decoration:none">Admin</a>
     </div>
 </footer>
 

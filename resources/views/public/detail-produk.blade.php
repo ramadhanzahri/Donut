@@ -4,7 +4,11 @@
 
 @push('styles')
 <style>
-.detail-wrap{padding:48px 6%;max-width:1100px;margin:0 auto}
+.detail-wrap{padding:48px 6%;max-width:1100px;margin:0 auto;position:relative}
+.detail-wrap::before{content:'';position:absolute;inset:0;
+    background:url('/images/pattern_donat.jpg') repeat;background-size:340px;
+    opacity:.03;pointer-events:none;z-index:0;border-radius:24px}
+.detail-wrap>*{position:relative;z-index:1}
 .breadcrumb{font-size:13px;color:var(--text-light);margin-bottom:28px;display:flex;align-items:center;gap:6px}
 .breadcrumb a{color:var(--text-mid);text-decoration:none}.breadcrumb a:hover{color:var(--pink)}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
