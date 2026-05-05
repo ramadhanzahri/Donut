@@ -33,6 +33,7 @@
 </style>
 @endpush
 
+@section('content')
 <div class="detail-wrap">
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -97,3 +98,4 @@
     </div>
 </section>
 @endif
+@endsection

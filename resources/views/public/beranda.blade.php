@@ -4,17 +4,73 @@
 @push('styles')
 <style>
 /* ═══ HERO ═══ */
-.hero{padding:88px 6% 72px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;
-    background:url('/images/poto1beranda.jpg') center/cover no-repeat;z-index:0;filter:blur(2px) brightness(.85)}
-.hero::after{content:'';position:absolute;inset:0;
-    background:linear-gradient(160deg,rgba(255,240,245,.92) 0%,rgba(242,117,117,.72) 100%);z-index:1}
-.hero>*{position:relative;z-index:2}
-.hero-badge{display:inline-block;background:var(--pink-pale);color:var(--pink);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:6px 18px;border-radius:20px;margin-bottom:20px}
-.hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--text);line-height:1.2;margin-bottom:16px}
-.hero h2 em{color:var(--pink);font-style:italic}
-.hero p{font-size:16px;color:var(--text-mid);max-width:520px;margin:0 auto 32px}
-.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.hero{
+    padding:88px 6% 72px;text-align:
+    center;position:relative;
+    overflow:hidden
+}
+
+.hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:url('/images/poto1beranda.jpg') center/cover no-repeat;
+    z-index:0;
+    filter:blur(2px) brightness(.85)
+}
+
+.hero::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(160deg,rgba(255,240,245,.92) 0%,rgba(242,117,117,.72) 100%);
+    z-index:1
+}
+
+.hero>*{
+    position:relative;
+    z-index:2
+}
+
+.hero-badge{
+    display:inline-block;
+    background:var(--pink-pale);
+    color:var(--pink);
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    padding:6px 18px;
+    border-radius:20px;
+    margin-bottom:20px
+}
+
+.hero h2{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2rem,5vw,3.2rem);
+    color:var(--text);
+    line-height:1.2;
+    margin-bottom:16px
+}
+
+.hero h2 em{
+    color:var(--pink);
+    font-style:italic
+}
+
+.hero p{
+    font-size:16px;
+    color:var(--text-mid);
+    max-width:520px;
+    margin:0 auto 32px
+}
+
+.hero-cta{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap
+}
 
 /* ═══ PRODUK FAVORIT ═══ */
 .section-pad{padding:64px 6%}
