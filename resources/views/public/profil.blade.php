@@ -4,295 +4,405 @@
 
 @push('styles')
 <style>
-/* ── HERO ── */
-.profil-hero{
-    position:relative;overflow:hidden;
-    padding:60px 6%;color:#fff;text-align:center;
-}
-.profil-hero::before{content:'';position:absolute;inset:0;
-    background:url('/images/bg_tentangkami.jpg') center/cover no-repeat;z-index:0;filter:brightness(.7)}
-.profil-hero::after{content:'';position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(242,117,117,.82),rgba(255,198,201,.65));z-index:1}
-.profil-hero>*{position:relative;z-index:2}
-.profil-hero h1{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(2rem,5vw,2.5rem);
-    font-weight:700;
-    margin-bottom:12px;
-    text-shadow:0 2px 12px rgba(0,0,0,.18);
-}
-.profil-hero p{
-    font-size:16px;
-    opacity:.95;
-    max-width:560px;
-    margin:0 auto;
-    line-height:1.7;
-    text-shadow:0 1px 6px rgba(0,0,0,.12);
-}
+    /* ── HERO ── */
+    .profil-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 60px 6%;
+        color: #fff;
+        text-align: center;
+    }
 
-/* ── PROFIL SECTION ── */
-.profil-section{
-    background:var(--pink-blush);
-    padding:80px 6%;
-}
-.profil-inner{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:56px;
-    align-items:start;
-    max-width:1000px;
-    margin:0 auto;
-}
-.profil-logo-wrap{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:16px;
-}
-.profil-logo-circle{
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:var(--pink);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:80px;
-    box-shadow:0 16px 48px rgba(242,117,117,.28);
-    overflow:hidden;
-    margin-bottom:12px;
-}
-.profil-logo-circle img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-.profil-logo-name{
-    font-family:'Playfair Display',serif;
-    font-size:1.2rem;
-    font-weight:700;
-    color:var(--text);
-    text-align:center;
-}
-.profil-logo-tag{
-    font-size:13px;
-    color:var(--text-light);
-    font-style:italic;
-    text-align:center;
-}
-.profil-info h2{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(1.4rem,3vw,1.8rem);
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:16px;
-    line-height:1.3;
-}
-.profil-info p{
-    font-size:15px;
-    color:var(--text-mid);
-    line-height:1.9;
-    margin-bottom:16px;
-}
-.profil-nilai{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    margin-top:24px;
-}
-.nilai-item{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-}
-.nilai-icon{
-    width:36px;
-    height:36px;
-    border-radius:10px;
-    background:var(--pink-pale);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:18px;
-    flex-shrink:0;
-}
-.nilai-text strong{
-    display:block;
-    font-size:14px;
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:2px;
-}
-.nilai-text span{
-    font-size:13px;
-    color:var(--text-mid);
-}
+    .profil-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('/images/bg_tentangkami.jpg') center/cover no-repeat;
+        z-index: 0;
+        filter: brightness(.7)
+    }
 
-/* ── SEJARAH ── */
-.sejarah-section{
-    padding:80px 6%;
-    background:#fff;
-    position:relative;overflow:hidden;
-}
-.sejarah-section::before{content:'';position:absolute;inset:0;
-    background:url('/images/tentang_bg.jpg') center/cover no-repeat;opacity:.04;pointer-events:none;z-index:0}
-.sejarah-section>*{position:relative;z-index:1}
-.sejarah-container h2{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(1.4rem,3vw,1.8rem);
-    color:var(--pink);
-    margin-bottom:8px;
-    text-align:center;
-}
-.sejarah-sub{
-    font-size:15px;
-    color:var(--text-light);
-    text-align:center;
-    margin-bottom:40px;
-}
-.sejarah-container p{
-    font-size:15px;
-    color:var(--text-mid);
-    line-height:1.9;
-    margin-bottom:16px;
-}
-.timeline{
-    position:relative;
-    padding-left:32px;
-    max-width:760px;
-    margin:32px auto 0;
-}
-.timeline::before{
-    content:'';
-    position:absolute;
-    left:8px;
-    top:0;
-    bottom:0;
-    width:2px;
-    background:linear-gradient(var(--pink),var(--pink-light));
-    border-radius:2px;
-}
-.tl-item{
-    position:relative;
-    margin-bottom:28px;
-}
-.tl-item:last-child{
-    margin-bottom:0;
-}
-.tl-dot{
-    position:absolute;
-    left:-28px;
-    top:4px;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:var(--pink);
-    border:3px solid #fff;
-    box-shadow:0 0 0 2px var(--pink);
-}
-.tl-year{
-    font-size:12px;
-    font-weight:800;
-    color:var(--pink);
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    margin-bottom:4px;
-}
-.tl-text{
-    font-size:15px;
-    color:var(--text-mid);
-    line-height:1.7;
-}
+    .profil-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(242, 117, 117, .82), rgba(255, 198, 201, .65));
+        z-index: 1
+    }
 
-/* ── INFO KONTAK ── */
-.info-section{
-    position:relative;overflow:hidden;
-    padding:80px 6%;
-}
-.info-section::before{content:'';position:absolute;inset:0;
-    background:url('/images/pattern_donat.jpg') repeat;background-size:300px;
-    opacity:.05;pointer-events:none;z-index:0}
-.info-section>*{position:relative;z-index:1}
-.info-section h2{
-    text-align:center;
-    font-family:'Playfair Display',serif;
-    font-size:clamp(1.4rem,3vw,1.8rem);
-    color:var(--pink);
-    margin-bottom:40px;
-    font-weight:700;
-}
-.info-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:24px;
-    max-width:1000px;
-    margin:0 auto 48px;
-}
-.info-card{
-    background:#fff;
-    border-radius:var(--radius);
-    padding:32px 24px;
-    text-align:center;
-    box-shadow:var(--shadow);
-    transition:transform var(--t),box-shadow var(--t);
-}
-.info-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 12px 32px rgba(242,117,117,.18);
-}
-.info-card i{
-    font-size:32px;
-    color:var(--pink);
-    margin-bottom:16px;
-    display:block;
-}
-.info-card h3{
-    font-size:16px;
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:8px;
-}
-.info-card p, .info-card a{
-    font-size:14px;
-    color:var(--text-mid);
-    line-height:1.7;
-    text-decoration:none;
-}
-.info-card a:hover{
-    color:var(--pink);
-}
-.wa-cta-wrap{
-    text-align:center;
-}
-.btn-wa-big{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    background:#25d366;
-    color:#fff;
-    padding:14px 36px;
-    border-radius:28px;
-    text-decoration:none;
-    font-size:16px;
-    font-weight:700;
-    box-shadow:0 6px 20px rgba(37,211,102,.3);
-    transition:background .2s, transform .2s;
-}
-.btn-wa-big:hover{
-    background:#1ebe5d;
-    transform:translateY(-2px);
-}
+    .profil-hero>* {
+        position: relative;
+        z-index: 2
+    }
 
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-    .profil-inner{grid-template-columns:1fr;gap:32px}
-    .profil-logo-wrap{flex-direction:row;align-items:center;gap:20px;justify-content:flex-start}
-    .profil-logo-circle{width:80px;height:80px;font-size:36px}
-    .profil-logo-name{text-align:left;flex:1}
-    .profil-logo-tag{text-align:left}
-    .sejarah-section{padding:60px 5%}
-    .info-section{padding:60px 5%}
-}
+    .profil-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, .18);
+    }
+
+    .profil-hero p {
+        font-size: 16px;
+        opacity: .95;
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.7;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, .12);
+    }
+
+    /* ── PROFIL SECTION ── */
+    .profil-section {
+        background: var(--pink-blush);
+        padding: 80px 6%;
+    }
+
+    .profil-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        align-items: start;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .profil-logo-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .profil-logo-circle {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: var(--pink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        box-shadow: 0 16px 48px rgba(242, 117, 117, .28);
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+
+    .profil-logo-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profil-logo-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text);
+        text-align: center;
+    }
+
+    .profil-logo-tag {
+        font-size: 13px;
+        color: var(--text-light);
+        font-style: italic;
+        text-align: center;
+    }
+
+    .profil-info h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 16px;
+        line-height: 1.3;
+    }
+
+    .profil-info p {
+        font-size: 15px;
+        color: var(--text-mid);
+        line-height: 1.9;
+        margin-bottom: 16px;
+    }
+
+    .profil-nilai {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 24px;
+    }
+
+    .nilai-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .nilai-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--pink-pale);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .nilai-text strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 2px;
+    }
+
+    .nilai-text span {
+        font-size: 13px;
+        color: var(--text-mid);
+    }
+
+    /* ── SEJARAH ── */
+    .sejarah-section {
+        padding: 80px 6%;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sejarah-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('/images/tentang_bg.jpg') center/cover no-repeat;
+        opacity: .04;
+        pointer-events: none;
+        z-index: 0
+    }
+
+    .sejarah-section>* {
+        position: relative;
+        z-index: 1
+    }
+
+    .sejarah-container h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        color: var(--pink);
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .sejarah-sub {
+        font-size: 15px;
+        color: var(--text-light);
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .sejarah-container p {
+        font-size: 15px;
+        color: var(--text-mid);
+        line-height: 1.9;
+        margin-bottom: 16px;
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 32px;
+        max-width: 760px;
+        margin: 32px auto 0;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(var(--pink), var(--pink-light));
+        border-radius: 2px;
+    }
+
+    .tl-item {
+        position: relative;
+        margin-bottom: 28px;
+    }
+
+    .tl-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .tl-dot {
+        position: absolute;
+        left: -28px;
+        top: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--pink);
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 2px var(--pink);
+    }
+
+    .tl-year {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--pink);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-bottom: 4px;
+    }
+
+    .tl-text {
+        font-size: 15px;
+        color: var(--text-mid);
+        line-height: 1.7;
+    }
+
+    /* ── INFO KONTAK ── */
+    .info-section {
+        position: relative;
+        overflow: hidden;
+        padding: 80px 6%;
+    }
+
+    .info-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('/images/pattern_donat.jpg') repeat;
+        background-size: 300px;
+        opacity: .05;
+        pointer-events: none;
+        z-index: 0
+    }
+
+    .info-section>* {
+        position: relative;
+        z-index: 1
+    }
+
+    .info-section h2 {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        color: var(--pink);
+        margin-bottom: 40px;
+        font-weight: 700;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        max-width: 1000px;
+        margin: 0 auto 48px;
+    }
+
+    .info-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 32px 24px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: transform var(--t), box-shadow var(--t);
+    }
+
+    .info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(242, 117, 117, .18);
+    }
+
+    .info-card i {
+        font-size: 32px;
+        color: var(--pink);
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .info-card h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 8px;
+    }
+
+    .info-card p,
+    .info-card a {
+        font-size: 14px;
+        color: var(--text-mid);
+        line-height: 1.7;
+        text-decoration: none;
+    }
+
+    .info-card a:hover {
+        color: var(--pink);
+    }
+
+    .wa-cta-wrap {
+        text-align: center;
+    }
+
+    .btn-wa-big {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #25d366;
+        color: #fff;
+        padding: 14px 36px;
+        border-radius: 28px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 700;
+        box-shadow: 0 6px 20px rgba(37, 211, 102, .3);
+        transition: background .2s, transform .2s;
+    }
+
+    .btn-wa-big:hover {
+        background: #1ebe5d;
+        transform: translateY(-2px);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px) {
+        .profil-inner {
+            grid-template-columns: 1fr;
+            gap: 32px
+        }
+
+        .profil-logo-wrap {
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            justify-content: flex-start
+        }
+
+        .profil-logo-circle {
+            width: 80px;
+            height: 80px;
+            font-size: 36px
+        }
+
+        .profil-logo-name {
+            text-align: left;
+            flex: 1
+        }
+
+        .profil-logo-tag {
+            text-align: left
+        }
+
+        .sejarah-section {
+            padding: 60px 5%
+        }
+
+        .info-section {
+            padding: 60px 5%
+        }
+    }
 </style>
 @endpush
 

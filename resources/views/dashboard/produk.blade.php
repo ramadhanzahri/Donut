@@ -4,16 +4,87 @@
 
 @push('styles')
 <style>
-.prod-img{width:44px;height:44px;border-radius:var(--radius-sm);object-fit:cover;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.prod-name-wrap{display:flex;align-items:center;gap:12px}
-.img-preview-wrap{position:relative;display:inline-block}
-.img-preview{width:100%;max-height:160px;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--border);margin-top:8px}
-.img-placeholder-box{background:var(--pink-pale);border:2px dashed var(--pink-light);border-radius:var(--radius-sm);padding:28px;text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;cursor:pointer}
-.img-placeholder-box i{font-size:28px;color:var(--pink-light);display:block;margin-bottom:6px}
-.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
-.filter-bar select,.filter-bar input{height:38px;padding:0 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);background:var(--surface-2);outline:none;transition:border-color var(--t)}
-.filter-bar select:focus,.filter-bar input:focus{border-color:var(--pink)}
-.modal.modal-lg{max-width:680px}
+    .prod-img {
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-sm);
+        object-fit: cover;
+        background: var(--pink-pale);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0
+    }
+
+    .prod-name-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px
+    }
+
+    .img-preview-wrap {
+        position: relative;
+        display: inline-block
+    }
+
+    .img-preview {
+        width: 100%;
+        max-height: 160px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        margin-top: 8px
+    }
+
+    .img-placeholder-box {
+        background: var(--pink-pale);
+        border: 2px dashed var(--pink-light);
+        border-radius: var(--radius-sm);
+        padding: 28px;
+        text-align: center;
+        color: var(--text-light);
+        font-size: 13px;
+        margin-top: 8px;
+        cursor: pointer
+    }
+
+    .img-placeholder-box i {
+        font-size: 28px;
+        color: var(--pink-light);
+        display: block;
+        margin-bottom: 6px
+    }
+
+    .filter-bar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        align-items: center
+    }
+
+    .filter-bar select,
+    .filter-bar input {
+        height: 38px;
+        padding: 0 12px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        color: var(--text);
+        background: var(--surface-2);
+        outline: none;
+        transition: border-color var(--t)
+    }
+
+    .filter-bar select:focus,
+    .filter-bar input:focus {
+        border-color: var(--pink)
+    }
+
+    .modal.modal-lg {
+        max-width: 680px
+    }
 </style>
 @endpush
 
@@ -42,18 +113,18 @@
         </select>
         <select name="status" onchange="this.form.submit()">
             <option value="">Semua Status</option>
-            <option value="aktif"    {{ request('status') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
+            <option value="aktif" {{ request('status') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
             <option value="nonaktif" {{ request('status') === 'nonaktif' ? 'selected' : '' }}>Non-aktif</option>
         </select>
         <input type="text" name="q" placeholder="Cari produk..." value="{{ request('q') }}"
-               style="min-width:180px">
+            style="min-width:180px">
         <button type="submit" class="btn btn-secondary" style="height:38px">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
         @if(request()->hasAny(['kategori','status','q']))
-            <a href="{{ route('produk.index') }}" class="btn btn-secondary" style="height:38px">
-                <i class="fa-solid fa-xmark"></i> Reset
-            </a>
+        <a href="{{ route('produk.index') }}" class="btn btn-secondary" style="height:38px">
+            <i class="fa-solid fa-xmark"></i> Reset
+        </a>
         @endif
     </form>
 </div>
@@ -78,9 +149,9 @@
                     <td>
                         <div class="prod-name-wrap">
                             @if($p->gambar)
-                                <img class="prod-img" src="{{ $p->gambar_url }}" alt="{{ $p->nama_produk }}">
+                            <img class="prod-img" src="{{ $p->gambar_url }}" alt="{{ $p->nama_produk }}">
                             @else
-                                <div class="prod-img">🍩</div>
+                            <div class="prod-img">🍩</div>
                             @endif
                             <span style="font-weight:600;color:var(--text)">{{ $p->nama_produk }}</span>
                         </div>
@@ -138,7 +209,7 @@
                     <div class="form-group">
                         <label class="form-label">Nama Produk <span style="color:var(--pink)">*</span></label>
                         <input type="text" name="nama_produk" class="form-control" required
-                               placeholder="Nama produk" value="{{ old('nama_produk') }}">
+                            placeholder="Nama produk" value="{{ old('nama_produk') }}">
                         @error('nama_produk')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
@@ -156,13 +227,13 @@
                     <div class="form-group">
                         <label class="form-label">Harga <span style="color:var(--pink)">*</span></label>
                         <input type="number" name="harga" class="form-control" required
-                               placeholder="Contoh: 15000" min="0" value="{{ old('harga') }}">
+                            placeholder="Contoh: 15000" min="0" value="{{ old('harga') }}">
                         @error('harga')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-control">
-                            <option value="aktif"    {{ old('status','aktif') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
+                            <option value="aktif" {{ old('status','aktif') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
                             <option value="nonaktif" {{ old('status') === 'nonaktif' ? 'selected' : '' }}>Non-aktif</option>
                         </select>
                     </div>
@@ -171,7 +242,7 @@
                     <div class="form-group">
                         <label class="form-label">Deskripsi</label>
                         <textarea name="deskripsi" class="form-control" rows="4"
-                                  placeholder="Deskripsi singkat produk">{{ old('deskripsi') }}</textarea>
+                            placeholder="Deskripsi singkat produk">{{ old('deskripsi') }}</textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Gambar Produk</label>
@@ -181,7 +252,7 @@
                             <small style="display:block;margin-top:4px;font-size:11px">JPG, PNG, WebP — max 2MB</small>
                         </div>
                         <input type="file" id="addGambar" name="gambar" accept="image/*"
-                               style="display:none" onchange="previewImg(this,'addPreview')">
+                            style="display:none" onchange="previewImg(this,'addPreview')">
                         <img id="addPreview" class="img-preview" style="display:none" alt="Preview">
                         @error('gambar')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
@@ -241,7 +312,7 @@
                             <i class="fa-solid fa-image"></i> Klik untuk ganti gambar
                         </div>
                         <input type="file" id="editGambar" name="gambar" accept="image/*"
-                               style="display:none" onchange="previewImg(this,'editPreview')">
+                            style="display:none" onchange="previewImg(this,'editPreview')">
                         <img id="editPreview" class="img-preview" style="display:none" alt="Preview">
                         <div id="editCurrentImg" style="margin-top:8px"></div>
                     </div>
@@ -260,43 +331,56 @@
 
 @push('scripts')
 <script>
-function openModal(id){ document.getElementById(id).classList.add('show'); }
-function closeModal(id){ document.getElementById(id).classList.remove('show'); }
-
-function previewImg(input, previewId){
-    var preview = document.getElementById(previewId);
-    if(input.files && input.files[0]){
-        var reader = new FileReader();
-        reader.onload = function(e){ preview.src = e.target.result; preview.style.display='block'; };
-        reader.readAsDataURL(input.files[0]);
+    function openModal(id) {
+        document.getElementById(id).classList.add('show');
     }
-}
 
-function openEditModal(p){
-    document.getElementById('editForm').action = '/produk-admin/' + p.id_produk;
-    document.getElementById('editNama').value       = p.nama_produk;
-    document.getElementById('editKategori').value   = p.id_kategori;
-    document.getElementById('editHarga').value      = p.harga;
-    document.getElementById('editStatus').value     = p.status;
-    document.getElementById('editDeskripsi').value  = p.deskripsi || '';
-    var curImg = document.getElementById('editCurrentImg');
-    if(p.gambar){
-        curImg.innerHTML = '<img src="'+p.gambar_url+'" class="img-preview" style="display:block" alt="Gambar saat ini">';
-    } else {
-        curImg.innerHTML = '';
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('show');
     }
-    document.getElementById('editPreview').style.display = 'none';
-    openModal('editModal');
-}
 
-@if($errors->any()) openModal('addModal'); @endif
+    function previewImg(input, previewId) {
+        var preview = document.getElementById(previewId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-document.querySelectorAll('.modal-overlay').forEach(function(el){
-    el.addEventListener('click', function(e){ if(e.target===el) el.classList.remove('show'); });
-});
-document.addEventListener('keydown',function(e){
-    if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(function(el){el.classList.remove('show');});
-});
+    function openEditModal(p) {
+        document.getElementById('editForm').action = '/produk-admin/' + p.id_produk;
+        document.getElementById('editNama').value = p.nama_produk;
+        document.getElementById('editKategori').value = p.id_kategori;
+        document.getElementById('editHarga').value = p.harga;
+        document.getElementById('editStatus').value = p.status;
+        document.getElementById('editDeskripsi').value = p.deskripsi || '';
+        var curImg = document.getElementById('editCurrentImg');
+        if (p.gambar) {
+            curImg.innerHTML = '<img src="' + p.gambar_url + '" class="img-preview" style="display:block" alt="Gambar saat ini">';
+        } else {
+            curImg.innerHTML = '';
+        }
+        document.getElementById('editPreview').style.display = 'none';
+        openModal('editModal');
+    }
+
+    @if($errors - > any()) openModal('addModal');
+    @endif
+
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            if (e.target === el) el.classList.remove('show');
+        });
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.show').forEach(function(el) {
+            el.classList.remove('show');
+        });
+    });
 </script>
 @endpush
 @endsection

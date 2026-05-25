@@ -798,45 +798,45 @@
   Hapus baris berikut dari bagian sidebar-nav:
 
       <a href="{{ route('profile-perusahaan.index') }}"
-         class="nav-item {{ request()->routeIs('profile-perusahaan.*') ? 'active' : '' }}">
-          <span class="nav-icon">🏢</span> Profil Perusahaan
-      </a>
+  class="nav-item {{ request()->routeIs('profile-perusahaan.*') ? 'active' : '' }}">
+  <span class="nav-icon">🏢</span> Profil Perusahaan
+  </a>
 
   Sidebar nav seharusnya menjadi:
---}}
+  --}}
 
-<nav class="sidebar-nav" aria-label="Navigasi admin">
+  <nav class="sidebar-nav" aria-label="Navigasi admin">
     <div class="nav-label">Menu Utama</div>
 
     <a href="{{ route('dashboard') }}"
-       class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        <span class="nav-icon">📊</span> Dashboard
+      class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+      <span class="nav-icon">📊</span> Dashboard
     </a>
 
     <a href="{{ route('kategori.index') }}"
-       class="nav-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
-        <span class="nav-icon">🏷️</span> Kategori
+      class="nav-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+      <span class="nav-icon">🏷️</span> Kategori
     </a>
 
     <a href="{{ route('produk.index') }}"
-       class="nav-item {{ request()->routeIs('produk.*') ? 'active' : '' }}">
-        <span class="nav-icon">🍩</span> Produk
+      class="nav-item {{ request()->routeIs('produk.*') ? 'active' : '' }}">
+      <span class="nav-icon">🍩</span> Produk
     </a>
 
     @if(Auth::user()->isSuperAdmin())
     <div class="nav-label">Super Admin</div>
     <a href="{{ route('admins.index') }}"
-       class="nav-item {{ request()->routeIs('admins.*') ? 'active' : '' }}">
-        <span class="nav-icon">👥</span> Kelola Admin
+      class="nav-item {{ request()->routeIs('admins.*') ? 'active' : '' }}">
+      <span class="nav-icon">👥</span> Kelola Admin
     </a>
     @endif
 
     <div class="nav-label">Website</div>
     <a href="{{ route('beranda') }}" target="_blank" rel="noopener" class="nav-item">
-        <span class="nav-icon">🌐</span> Lihat Website
-        <span class="nav-ext">↗</span>
+      <span class="nav-icon">🌐</span> Lihat Website
+      <span class="nav-ext">↗</span>
     </a>
-</nav>
+  </nav>
 
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

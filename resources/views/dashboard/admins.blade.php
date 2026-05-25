@@ -4,50 +4,135 @@
 
 @push('styles')
 <style>
-.admin-avatar{
-    width:38px;height:38px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:15px;font-weight:700;color:#fff;flex-shrink:0;
-}
-.avatar-aktif   { background: var(--pink); }
-.avatar-nonaktif{ background: var(--text-light); }
+    .admin-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+    }
 
-.status-toggle{
-    display:inline-flex;align-items:center;gap:0;
-    border-radius:20px;overflow:hidden;
-    border:1.5px solid var(--border);
-    background:var(--surface);
-    cursor:pointer;
-}
-.status-toggle form { display:contents; }
-.toggle-btn{
-    padding:5px 14px;font-size:12px;font-weight:700;
-    border:none;cursor:pointer;transition:background var(--t),color var(--t);
-    font-family:'DM Sans',sans-serif;
-    background:transparent;color:var(--text-light);
-}
-.toggle-btn.aktif-btn.on   { background:#edfdf5;color:#1a7a4a; }
-.toggle-btn.nonaktif-btn.on{ background:#fff0f0;color:#e74c3c; }
+    .avatar-aktif {
+        background: var(--pink);
+    }
 
-.row-nonaktif td{ opacity:.55; }
-.row-nonaktif:hover td{ opacity:.8; }
+    .avatar-nonaktif {
+        background: var(--text-light);
+    }
 
-.stats-mini{
-    display:flex;gap:14px;margin-bottom:24px;flex-wrap:wrap;
-}
-.stat-mini-card{
-    background:var(--surface-2);border:1px solid var(--border);
-    border-radius:var(--radius-sm);padding:14px 20px;
-    display:flex;align-items:center;gap:12px;
-    box-shadow:var(--shadow);flex:1;min-width:160px;
-}
-.stat-mini-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.icon-all    { background:var(--pink-pale);     color:var(--pink);   }
-.icon-aktif  { background:#edfdf5;              color:#1a7a4a;       }
-.icon-nonaktif{ background:#fff0f0;             color:#e74c3c;       }
-.icon-super  { background:#fffbea;              color:#856404;       }
-.stat-mini-val{ font-size:22px;font-weight:800;color:var(--text);line-height:1 }
-.stat-mini-lbl{ font-size:11px;color:var(--text-light);margin-top:2px }
+    .status-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        cursor: pointer;
+    }
+
+    .status-toggle form {
+        display: contents;
+    }
+
+    .toggle-btn {
+        padding: 5px 14px;
+        font-size: 12px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: background var(--t), color var(--t);
+        font-family: 'DM Sans', sans-serif;
+        background: transparent;
+        color: var(--text-light);
+    }
+
+    .toggle-btn.aktif-btn.on {
+        background: #edfdf5;
+        color: #1a7a4a;
+    }
+
+    .toggle-btn.nonaktif-btn.on {
+        background: #fff0f0;
+        color: #e74c3c;
+    }
+
+    .row-nonaktif td {
+        opacity: .55;
+    }
+
+    .row-nonaktif:hover td {
+        opacity: .8;
+    }
+
+    .stats-mini {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
+    .stat-mini-card {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: var(--shadow);
+        flex: 1;
+        min-width: 160px;
+    }
+
+    .stat-mini-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0
+    }
+
+    .icon-all {
+        background: var(--pink-pale);
+        color: var(--pink);
+    }
+
+    .icon-aktif {
+        background: #edfdf5;
+        color: #1a7a4a;
+    }
+
+    .icon-nonaktif {
+        background: #fff0f0;
+        color: #e74c3c;
+    }
+
+    .icon-super {
+        background: #fffbea;
+        color: #856404;
+    }
+
+    .stat-mini-val {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1
+    }
+
+    .stat-mini-lbl {
+        font-size: 11px;
+        color: var(--text-light);
+        margin-top: 2px
+    }
 </style>
 @endpush
 
@@ -124,7 +209,7 @@
                                 <div style="font-weight:700;color:var(--text);font-size:14px">
                                     {{ $admin->name }}
                                     @if($admin->id === Auth::id())
-                                        <span class="badge badge-info" style="margin-left:4px">Anda</span>
+                                    <span class="badge badge-info" style="margin-left:4px">Anda</span>
                                     @endif
                                 </div>
                                 <div style="font-size:11px;color:var(--text-light)">
@@ -141,9 +226,9 @@
                     <td>
                         <span class="badge {{ $admin->role === 'superadmin' ? 'badge-warning' : 'badge-info' }}">
                             @if($admin->role === 'superadmin')
-                                <i class="fa-solid fa-shield-halved" style="margin-right:3px"></i>
+                            <i class="fa-solid fa-shield-halved" style="margin-right:3px"></i>
                             @else
-                                <i class="fa-solid fa-user" style="margin-right:3px"></i>
+                            <i class="fa-solid fa-user" style="margin-right:3px"></i>
                             @endif
                             {{ $admin->role }}
                         </span>
@@ -152,27 +237,27 @@
                     {{-- Status Toggle --}}
                     <td>
                         @if($admin->id === Auth::id())
-                            {{-- Akun sendiri tidak bisa dinonaktifkan --}}
-                            <span class="badge badge-success">
-                                <i class="fa-solid fa-circle" style="font-size:8px;margin-right:3px"></i>aktif
-                            </span>
+                        {{-- Akun sendiri tidak bisa dinonaktifkan --}}
+                        <span class="badge badge-success">
+                            <i class="fa-solid fa-circle" style="font-size:8px;margin-right:3px"></i>aktif
+                        </span>
                         @else
-                            <div class="status-toggle" title="Klik untuk ubah status">
-                                <form action="{{ route('admins.toggle-status', $admin->id) }}" method="POST">
-                                    @csrf @method('PATCH')
-                                    <button type="submit"
-                                        class="toggle-btn aktif-btn {{ $admin->status === 'aktif' ? 'on' : '' }}">
-                                        <i class="fa-solid fa-circle" style="font-size:7px;margin-right:4px"></i>Aktif
-                                    </button>
-                                </form>
-                                <form action="{{ route('admins.toggle-status', $admin->id) }}" method="POST">
-                                    @csrf @method('PATCH')
-                                    <button type="submit"
-                                        class="toggle-btn nonaktif-btn {{ $admin->status === 'nonaktif' ? 'on' : '' }}">
-                                        <i class="fa-solid fa-circle" style="font-size:7px;margin-right:4px"></i>Nonaktif
-                                    </button>
-                                </form>
-                            </div>
+                        <div class="status-toggle" title="Klik untuk ubah status">
+                            <form action="{{ route('admins.toggle-status', $admin->id) }}" method="POST">
+                                @csrf @method('PATCH')
+                                <button type="submit"
+                                    class="toggle-btn aktif-btn {{ $admin->status === 'aktif' ? 'on' : '' }}">
+                                    <i class="fa-solid fa-circle" style="font-size:7px;margin-right:4px"></i>Aktif
+                                </button>
+                            </form>
+                            <form action="{{ route('admins.toggle-status', $admin->id) }}" method="POST">
+                                @csrf @method('PATCH')
+                                <button type="submit"
+                                    class="toggle-btn nonaktif-btn {{ $admin->status === 'nonaktif' ? 'on' : '' }}">
+                                    <i class="fa-solid fa-circle" style="font-size:7px;margin-right:4px"></i>Nonaktif
+                                </button>
+                            </form>
+                        </div>
                         @endif
                     </td>
 
@@ -245,20 +330,20 @@
                 <div class="form-group">
                     <label class="form-label">Nama Lengkap <span style="color:var(--pink)">*</span></label>
                     <input type="text" name="name" class="form-control" required
-                           placeholder="Nama lengkap" value="{{ old('name') }}">
+                        placeholder="Nama lengkap" value="{{ old('name') }}">
                     @error('name')<span class="invalid-feedback">{{ $message }}</span>@enderror
                 </div>
                 <div class="form-group">
                     <label class="form-label">Username <span style="color:var(--pink)">*</span></label>
                     <input type="text" name="username" class="form-control" required
-                           placeholder="Username untuk login" value="{{ old('username') }}">
+                        placeholder="Username untuk login" value="{{ old('username') }}">
                     @error('username')<span class="invalid-feedback">{{ $message }}</span>@enderror
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password <span style="color:var(--pink)">*</span></label>
                     <div style="position:relative">
                         <input type="password" name="password" id="addPassword" class="form-control"
-                               required placeholder="Minimal 6 karakter" style="padding-right:44px">
+                            required placeholder="Minimal 6 karakter" style="padding-right:44px">
                         <button type="button" onclick="togglePass('addPassword',this)"
                             style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-light);cursor:pointer;font-size:15px">
                             <i class="fa-solid fa-eye"></i>
@@ -270,19 +355,19 @@
                     <div class="form-group" style="margin-bottom:0">
                         <label class="form-label">Role <span style="color:var(--pink)">*</span></label>
                         <select name="role" class="form-control" required>
-                            <option value="admin"      {{ old('role','admin') === 'admin'      ? 'selected' : '' }}>Admin</option>
+                            <option value="admin" {{ old('role','admin') === 'admin'      ? 'selected' : '' }}>Admin</option>
                             <option value="superadmin" {{ old('role') === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-bottom:0">
                         <label class="form-label">Status <span style="color:var(--pink)">*</span></label>
                         <select name="status" class="form-control" required>
-                            <option value="aktif"    {{ old('status','aktif') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
+                            <option value="aktif" {{ old('status','aktif') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
                             <option value="nonaktif" {{ old('status') === 'nonaktif' ? 'selected' : '' }}>Non-aktif</option>
                         </select>
                     </div>
                 </div>
-                @error('role')  <span class="invalid-feedback">{{ $message }}</span>@enderror
+                @error('role') <span class="invalid-feedback">{{ $message }}</span>@enderror
                 @error('status')<span class="invalid-feedback">{{ $message }}</span>@enderror
             </div>
             <div class="modal-footer">
@@ -321,8 +406,8 @@
                     </label>
                     <div style="position:relative">
                         <input type="password" name="password" id="editPassword"
-                               class="form-control" placeholder="Isi untuk ganti password"
-                               style="padding-right:44px">
+                            class="form-control" placeholder="Isi untuk ganti password"
+                            style="padding-right:44px">
                         <button type="button" onclick="togglePass('editPassword',this)"
                             style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-light);cursor:pointer;font-size:15px">
                             <i class="fa-solid fa-eye"></i>
@@ -361,40 +446,50 @@
 
 @push('scripts')
 <script>
-function openModal(id){ document.getElementById(id).classList.add('show'); }
-function closeModal(id){ document.getElementById(id).classList.remove('show'); }
-
-function openEditModal(id, name, username, role, status){
-    document.getElementById('editForm').action = '/admins/' + id;
-    document.getElementById('editName').value     = name;
-    document.getElementById('editUsername').value = username;
-    document.getElementById('editRole').value     = role;
-    document.getElementById('editStatus').value   = status;
-    document.getElementById('editPassword').value = '';
-    openModal('editModal');
-}
-
-function togglePass(inputId, btn){
-    var input = document.getElementById(inputId);
-    var icon  = btn.querySelector('i');
-    if(input.type === 'password'){
-        input.type = 'text';
-        icon.classList.replace('fa-eye','fa-eye-slash');
-    } else {
-        input.type = 'password';
-        icon.classList.replace('fa-eye-slash','fa-eye');
+    function openModal(id) {
+        document.getElementById(id).classList.add('show');
     }
-}
 
-@if($errors->any()) openModal('addModal'); @endif
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('show');
+    }
 
-document.querySelectorAll('.modal-overlay').forEach(function(el){
-    el.addEventListener('click', function(e){ if(e.target===el) el.classList.remove('show'); });
-});
-document.addEventListener('keydown', function(e){
-    if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show')
-        .forEach(function(el){ el.classList.remove('show'); });
-});
+    function openEditModal(id, name, username, role, status) {
+        document.getElementById('editForm').action = '/admins/' + id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editUsername').value = username;
+        document.getElementById('editRole').value = role;
+        document.getElementById('editStatus').value = status;
+        document.getElementById('editPassword').value = '';
+        openModal('editModal');
+    }
+
+    function togglePass(inputId, btn) {
+        var input = document.getElementById(inputId);
+        var icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    @if($errors - > any()) openModal('addModal');
+    @endif
+
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            if (e.target === el) el.classList.remove('show');
+        });
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.show')
+            .forEach(function(el) {
+                el.classList.remove('show');
+            });
+    });
 </script>
 @endpush
 @endsection
