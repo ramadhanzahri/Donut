@@ -178,7 +178,7 @@
     <p>Brand lokal yang menyajikan donat lembut dengan beragam topping kekinian untuk semua momen spesial Anda.</p>
     <div class="hero-cta">
         <a href="{{ route('katalog') }}" class="btn-pink"><i class="fa-solid fa-shop"></i> Lihat Katalog</a>
-        <a href="#profil" class="btn-outline">Tentang Kami</a>
+        <a href="{{ route('tentang') }}" class="btn-outline">Tentang Kami</a>
     </div>
 </section>
 
